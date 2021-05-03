@@ -1,42 +1,119 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Typography, Popconfirm, Form } from "antd";
-// import axios from "axios";
-// import { ApiBus } from "../../../services/api";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Typography, Form, message } from "antd";
 import StudentModal from "./StudentModal";
 import StudentTable from "./StudentTable";
+import axios from "../../../services/axios";
 function Students() {
-  // const [form] = Form.useForm();
+  const [form] = Form.useForm();
   const { Title } = Typography;
   const [students, setStudents] = useState([]);
-  //Modal
+  const [loading, setloading] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [editingKey, setEditingKey] = useState("");
+
   const [visible, setVisible] = useState(false);
 
-  const submitHandler = (values) => {
-    console.log("values created", values);
+  const getStudents = async () => {
+    try {
+      setloading(true);
+      const response = await axios.get("/api/students/all");
 
-    const randomNumber = Math.floor(Math.random() * 100);
-    const newStudents = [
-      ...students,
-      {
-        ...values,
-        key: randomNumber,
-      },
-    ];
-    setStudents(newStudents);
-    
-
-    setVisible(false);
+      const newResponse = [...response.data].map((student) => {
+        const object = {
+          ...student,
+          key: student._id,
+        };
+        return object;
+      });
+      setStudents(newResponse);
+      console.log(newResponse);
+      setloading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  useEffect(() => {
-    const storedStudents = JSON.parse(localStorage.getItem("students"));
-    setStudents(storedStudents);
-  }, []);
+  const updateStudent = async (key) => {
+    try {
+      const row = await form.validateFields();
+      const newData = [...students];
+      const index = newData.findIndex((item) => key === item.key);
 
+      // console.log(name);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, { ...item, ...row });
+        setEditingKey("");
+
+        const { name, email, password, phone, systemId, sex } = newData[index];
+
+        const response = await axios.put(`/api/students/${key}`, {
+          name,
+          email,
+          password,
+          phone,
+          systemId,
+          sex,
+        });
+
+        if (response) {
+          getStudents();
+          setDisable(false);
+          message.success("Item updated");
+        }
+      } else {
+        newData.push(row);
+        setStudents(newData);
+        setEditingKey("");
+      }
+    } catch (errInfo) {
+      message.error("Email already exist");
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const deleteStudent = async (key) => {
+    try {
+      const newData = [...students];
+      const index = newData.findIndex((item) => key === item.key);
+
+      const response = await axios.delete(`/api/students/${key}`);
+
+      if (response) {
+        getStudents();
+        message.warning("Item deleted");
+      }
+
+      newData.splice(index, 1);
+
+      setStudents(newData);
+      setEditingKey("");
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const submitStudent = async (values) => {
+    try {
+      const response = await axios.post("/api/students/add", values);
+
+      if (response) {
+        getStudents();
+        message.success("Item Added");
+      }
+      setDisable(false);
+      setVisible(false);
+    } catch (error) {
+      message.error("Email already exist");
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
-    localStorage.setItem("students", JSON.stringify(students));
-  }, [students]);
+    const confirm = async () => await getStudents();
+
+    confirm();
+    // setStudents([]);
+  }, [setStudents]);
 
   return (
     <div>
@@ -47,19 +124,32 @@ function Students() {
           marginBottom: "10px",
         }}
         type="primary"
-        onClick={() => setVisible(true)}
+        disabled={disable}
+        onClick={() => {
+          setVisible(true);
+          setDisable(true);
+        }}
       >
         Add Item
       </Button>
       {/* <Table bordered columns={columns} dataSource={students} /> */}
 
-      <StudentTable data={students} setData={setStudents} />
+      <StudentTable
+        students={students}
+        loading={loading}
+        editingKey={editingKey}
+        setEditingKey={setEditingKey}
+        deleted={deleteStudent}
+        editSave={updateStudent}
+        form={form}
+        setDisable={setDisable}
+      />
       <StudentModal
         visible={visible}
-        onCreate={(e) => submitHandler(e)}
+        onCreate={(values) => submitStudent(values)}
         onCancel={() => {
           setVisible(false);
-          // form.resetFields();
+          setDisable(false);
         }}
       />
     </div>

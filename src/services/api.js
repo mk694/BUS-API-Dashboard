@@ -1,13 +1,15 @@
-import axios from "axios";
-
-const URL = "http://localhost:8080/api";
+import Axios from "axios";
 
 /* ADMIN(user) */
-export class ApiService {
-  createUser = function (data) {
-    return axios.post(`${URL}/auth/signup`, data);
-  };
-}
+// export class ApiService {
+//   createUser = function (data) {
+//     return axios.post(`${URL}/auth/signup`, data);
+//   };
+
+//   deleteUser = () => {
+
+//   }
+// }
 
 /* DRIVERS */
 

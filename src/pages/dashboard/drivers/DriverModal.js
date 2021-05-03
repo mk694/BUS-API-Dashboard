@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Form, Input, Radio } from "antd";
 
-const StudentModal = ({ visible, onCreate, onCancel }) => {
+const DriverModal = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 5 },
@@ -34,7 +34,7 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
       <Form
         form={form}
         {...layout}
-        name="form_in_modal"
+        name="student_modal"
         initialValues={{
           modifier: "public",
         }}
@@ -45,7 +45,7 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please input the title of collection!",
+              message: "Please input your name!",
             },
           ]}
         >
@@ -57,7 +57,7 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please input tcorrect email",
+              message: "Please input correct email",
               type: "email",
             },
           ]}
@@ -100,7 +100,17 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="gender" label="Gender">
+        <Form.Item
+          name="sex"
+          label="Gender"
+          initialValue="Male"
+          rules={[
+            {
+              required: true,
+              message: "Please select your Gender",
+            },
+          ]}
+        >
           <Radio.Group>
             <Radio value="Male">Male</Radio>
             <Radio value="Female">Female</Radio>
@@ -111,4 +121,4 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
   );
 };
 
-export default StudentModal;
+export default DriverModal;

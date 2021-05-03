@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, Radio } from "antd";
+import { Modal, Form, Input, Radio} from "antd";
 
 const DriverModal = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
@@ -34,7 +34,7 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
       <Form
         form={form}
         {...layout}
-        name="form_in_modal"
+        name="student_modal"
         initialValues={{
           modifier: "public",
         }}
@@ -45,7 +45,7 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please input the title of collection!",
+              message: "Please input your name!",
             },
           ]}
         >
@@ -57,7 +57,7 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
-              message: "Please input tcorrect email",
+              message: "Please input correct email",
               type: "email",
             },
           ]}
@@ -101,8 +101,9 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name="gender"
+          name="sex"
           label="Gender"
+          initialValue="Male"
           rules={[
             {
               required: true,
