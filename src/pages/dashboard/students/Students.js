@@ -26,7 +26,7 @@ function Students() {
         return object;
       });
       setStudents(newResponse);
-      console.log(newResponse);
+      console.log(response.data);
       setloading(false);
     } catch (error) {
       console.log(error.message);
@@ -113,7 +113,7 @@ function Students() {
 
     confirm();
     // setStudents([]);
-  }, [setStudents]);
+  }, []);
 
   return (
     <div>

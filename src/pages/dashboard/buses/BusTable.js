@@ -37,8 +37,8 @@ const EditableCell = ({
   );
 };
 
-const DriverTable = ({
-  drivers,
+const BusTable = ({
+  buses,
   loading,
   deleted,
   editingKey,
@@ -53,9 +53,7 @@ const DriverTable = ({
 
   const edit = (record) => {
     form.setFieldsValue({
-      name: "",
-      phone: "",
-      photo: "",
+      Title: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -72,19 +70,21 @@ const DriverTable = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
-      editable: true,
     },
     {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-      editable: true,
+      title: "Capacity",
+      dataIndex: "capacity",
+      key: "capacity",
     },
     {
-      title: "Photo",
-      dataIndex: "photo",
-      key: "photo",
-      editable: true,
+      title: "AssignedRoute",
+      dataIndex: "assignedRoute",
+      key: "assignedRoute",
+    },
+    {
+      title: "AssignedDriver",
+      dataIndex: "assignedDriver",
+      key: "assignedDriver",
     },
     {
       title: "Actions",
@@ -176,7 +176,7 @@ const DriverTable = ({
           },
         }}
         bordered
-        dataSource={drivers}
+        dataSource={buses}
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{
@@ -187,4 +187,4 @@ const DriverTable = ({
   );
 };
 
-export default DriverTable;
+export default BusTable;

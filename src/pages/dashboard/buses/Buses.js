@@ -1,67 +1,116 @@
-import React from "react";
-import { Button, Table, Typography } from "antd";
-// import axios from "axios";
-// import { ApiBus } from "../../../services/api";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Button, Typography, Form, message } from "antd";
+import BusModal from "./BusModal";
+import BusTable from "./BusTable";
+import axios from "../../../services/axios";
 
 function Buses() {
-  // const [totalBuses, setTotalBuses] = useState([]);
-
+  const [form] = Form.useForm();
   const { Title } = Typography;
-  //Add columns here
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Capacity",
-      dataIndex: "capacity",
-      key: "capacity",
-    },
-    {
-      title: "AssignedRoute",
-      dataIndex: "assignedRoute",
-      key: "assignedRoute",
-    },
-    {
-      title: "AssignedDriver",
-      dataIndex: "assignedDriver",
-      key: "assignedDriver",
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
-      align: "center",
-      render: () => (
-        <>
-          <EditOutlined
-            style={{
-              color: "blue",
-            }}
-          />
-          <DeleteOutlined
-            style={{
-              color: "red",
-              marginLeft: "20px",
-            }}
-          />
-        </>
-      ),
-    },
-  ];
+  const [buses, setBuses] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [editingKey, setEditingKey] = useState("");
 
-  const data = [
-    {
-      key: "1",
-      name: "Muhammd Moin",
-      capacity: "capacity",
-      assignedRoute: "Islamabad",
-      assignedDriver: "Sohail",
-    },
-  ];
+  const [visible, setVisible] = useState(false);
+
+  const getBuses = async () => {
+    try {
+      setloading(true);
+      const response = await axios.get("/api/buses/all");
+
+      const newResponse = [...response.data].map((bus) => {
+        const object = {
+          ...bus,
+          key: bus._id,
+        };
+        return object;
+      });
+      setBuses(newResponse);
+      console.log(response.data);
+      setloading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const updateBus = async (key) => {
+    try {
+      const row = await form.validateFields();
+      const newData = [...buses];
+      const index = newData.findIndex((item) => key === item.key);
+
+      // console.log(name);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, { ...item, ...row });
+        setEditingKey("");
+
+        const { title } = newData[index];
+
+        const response = await axios.put(`/api/buses/${key}`, {
+          title,
+        });
+
+        if (response) {
+          getBuses();
+          setDisable(false);
+          message.success("Item updated");
+        }
+      } else {
+        newData.push(row);
+        setBuses(newData);
+        setEditingKey("");
+      }
+    } catch (errInfo) {
+      message.error("Email already exist");
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const deleteBus = async (key) => {
+    try {
+      const newData = [...buses];
+      const index = newData.findIndex((item) => key === item.key);
+
+      const response = await axios.delete(`/api/buses/${key}`);
+
+      if (response) {
+        getBuses();
+        message.warning("Item deleted");
+      }
+
+      newData.splice(index, 1);
+
+      setBuses(newData);
+      setEditingKey("");
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const submitBus = async (values) => {
+    console.log("Values", values);
+    try {
+      const response = await axios.post("/api/buses/add", values);
+
+      if (response) {
+        getBuses();
+        message.success("Item Added");
+      }
+      setDisable(false);
+      setVisible(false);
+    } catch (error) {
+      message.error("Email already exist");
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    const confirm = async () => await getBuses();
+
+    confirm();
+    // setBuses([]);
+  }, []);
 
   return (
     <div>
@@ -72,30 +121,35 @@ function Buses() {
           marginBottom: "10px",
         }}
         type="primary"
+        disabled={disable}
+        onClick={() => {
+          setVisible(true);
+          setDisable(true);
+        }}
       >
         Add Item
       </Button>
-      <Table bordered columns={columns} dataSource={data} />
+      {/* <Table bordered columns={columns} dataSource={buses} /> */}
+
+      <BusTable
+        buses={buses}
+        loading={loading}
+        editingKey={editingKey}
+        setEditingKey={setEditingKey}
+        deleted={deleteBus}
+        editSave={updateBus}
+        form={form}
+        setDisable={setDisable}
+      />
+      <BusModal
+        visible={visible}
+        onCreate={(values) => submitBus(values)}
+        onCancel={() => {
+          setVisible(false);
+          setDisable(false);
+        }}
+      />
     </div>
   );
 }
-
 export default Buses;
-
-// const data =[ totalBuses.map((bus) => {
-//   return {
-//     key: bus._id,
-//     name: bus.name,
-//     capacity: bus.capacity,
-//   };
-// });]
-
-// useEffect(() => {
-//   const getAllBuses = async () => {
-//     const res = await axios.get(`http://localhost:8080/api/buses/all`);
-//     console.log(res);
-
-//     return res;
-//   };
-//   return getAllBuses;
-// }, []);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, Radio} from "antd";
+import { Modal, Form, Input, Radio } from "antd";
 
 const DriverModal = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();

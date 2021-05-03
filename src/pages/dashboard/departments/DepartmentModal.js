@@ -1,7 +1,7 @@
 import React from "react";
-import { Modal, Form, Input, Radio } from "antd";
+import { Modal, Form, Input } from "antd";
 
-const DriverModal = ({ visible, onCreate, onCancel }) => {
+const DepartmentModal = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 5 },
@@ -34,42 +34,18 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
       <Form
         form={form}
         {...layout}
-        name="driver_modal"
+        name="department_modal"
         initialValues={{
           modifier: "public",
         }}
       >
         <Form.Item
-          name="name"
-          label="Name"
+          name="title"
+          label="Title"
           rules={[
             {
               required: true,
-              message: "Please input your name!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            {
-              required: true,
-              message: "Please input correct phone number",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>{" "}
-        <Form.Item
-          name="photo"
-          label="Photo"
-          rules={[
-            {
-              required: true,
-              message: "Please provide a photo",
+              message: "Please input the title!",
             },
           ]}
         >
@@ -80,4 +56,4 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
   );
 };
 
-export default DriverModal;
+export default DepartmentModal;
