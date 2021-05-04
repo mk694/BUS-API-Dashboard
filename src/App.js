@@ -21,11 +21,11 @@ function App() {
 
   // const createUser = () => {
   //   console.log("cicked");
-  //   //   signUp(user).then(response=>{
-  //   //     console.log('user created', response.data);
-  //   //     localStorage.setItem('token', response.data.token);
-  //   //     localStorage.setItem('user', JSON.stringify(response.data))
-  //   // })
+  //   signUp(user).then((response) => {
+  //     console.log("user created", response.data);
+  //     localStorage.setItem("token", response.data.token);
+  //     localStorage.setItem("user", JSON.stringify(response.data));
+  //   });
   // };
 
   // const routing = useRoutes(routes);

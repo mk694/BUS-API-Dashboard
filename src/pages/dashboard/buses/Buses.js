@@ -46,10 +46,10 @@ function Buses() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { title } = newData[index];
+        const { name, capacity, assignedRoute , assignedDriver } = newData[index];
 
         const response = await axios.put(`/api/buses/${key}`, {
-          title,
+          name, capacity, assignedRoute , assignedDriver ,
         });
 
         if (response) {

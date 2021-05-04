@@ -1,4 +1,6 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import { useHistory } from "react-router";
+import { Admin } from "../services/api";
 
 function SignUp() {
   const layout = {
@@ -9,8 +11,24 @@ function SignUp() {
     wrapperCol: { offset: 8, span: 16 },
   };
 
-  const onFinish = (values) => {
+  const history = useHistory();
+
+  const onFinish = async (values) => {
     console.log("Success:", values);
+    try {
+      const response = await Admin.signUp(values);
+      console.log(response.data.token);
+
+      if (response) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        history.push("/dashboard");
+        message.success("Logged in");
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Email already exists");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -55,9 +73,9 @@ function SignUp() {
         <Input.Password />
       </Form.Item>
 
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+      {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">

@@ -1,4 +1,6 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
+import { useHistory } from "react-router";
+import { Admin } from "../services/api";
 
 function Login() {
   const layout = {
@@ -9,8 +11,26 @@ function Login() {
     wrapperCol: { offset: 8, span: 16 },
   };
 
-  const onFinish = (values) => {
+  const history = useHistory();
+
+  const onFinish = async (values) => {
     console.log("Success:", values);
+    try {
+      const response = await Admin.signIn(values);
+      console.log(response.data.token);
+
+      if (response) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        const push = history.push("/dashboard");
+        if (push) {
+          message.success("Logged in");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Incorrect email or password");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {

@@ -40,12 +40,48 @@ const BusModal = ({ visible, onCreate, onCancel }) => {
         }}
       >
         <Form.Item
-          name="title"
-          label="Title"
+          name="name"
+          label="Name"
           rules={[
             {
               required: true,
-              message: "Please input the title!",
+              message: "Please input the name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="capacity"
+          label="Capacity"
+          rules={[
+            {
+              required: true,
+              message: "Please input the capacity!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="assignedRoute"
+          label="AssignedRoute"
+          rules={[
+            {
+              required: true,
+              message: "Please input the assignedRoute!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="assignedDriver"
+          label="AssignedDriver"
+          rules={[
+            {
+              required: true,
+              message: "Please input the assignedDriver!",
             },
           ]}
         >

@@ -53,7 +53,10 @@ const BusTable = ({
 
   const edit = (record) => {
     form.setFieldsValue({
-      Title: "",
+      name: "",
+      capacity: "",
+      assignedRoute: "",
+      assignedDriver: "",
       ...record,
     });
     setEditingKey(record.key);
