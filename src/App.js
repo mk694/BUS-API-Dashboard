@@ -23,9 +23,6 @@ function App() {
         <Route exact path="/">
           <Redirect to="/app" />
         </Route>
-        <Route path="*">
-          <Redirect to="/app" />
-        </Route>
       </Switch>
     </>
   );
