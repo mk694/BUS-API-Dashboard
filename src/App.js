@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
+  useRouteMatch,
 } from "react-router-dom";
 
 import "./App.css";
@@ -13,38 +14,26 @@ import SignUp from "./pages/Signup";
 import AppLayout from "./pages/AppLayout";
 
 function App() {
-  // const user = {
-  //   email: "moeidsaleem@gmail.com",
-  //   password: "moeid123",
-  //   name: "Moin",
-  // };
+  const [isLogged, setIsLogged] = useState(false);
 
-  // const createUser = () => {
-  //   console.log("cicked");
-  //   signUp(user).then((response) => {
-  //     console.log("user created", response.data);
-  //     localStorage.setItem("token", response.data.token);
-  //     localStorage.setItem("user", JSON.stringify(response.data));
-  //   });
-  // };
+  const token = localStorage.getItem("Token");
 
-  // const routing = useRoutes(routes);
+  useEffect(() => {
+    if (token !== null) {
+      setIsLogged(true);
+    }
+  }, []);
 
   return (
-    <div>
-      <Router className="logo">
-        <Switch>
-          <AppLayout />
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-        </Switch>
-        <Redirect to="/dashboard" />
-      </Router>
-    </div>
+    <Switch>
+      <Route path="/login" component={isLogged ? AppLayout : Login} />
+      <Route path="/app" component={AppLayout} />
+
+      <Route path="/signup">
+        <SignUp />
+      </Route>
+      <Redirect to="/login" />
+    </Switch>
   );
 }
 

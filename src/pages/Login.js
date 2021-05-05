@@ -1,31 +1,23 @@
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Typography } from "antd";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { Admin } from "../services/api";
 
 function Login() {
-  const layout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 16 },
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
+  const { Title } = Typography;
 
   const history = useHistory();
 
   const onFinish = async (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
     try {
       const response = await Admin.signIn(values);
-      console.log(response.data.token);
 
       if (response) {
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("Token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        const push = history.push("/dashboard");
-        if (push) {
-          message.success("Logged in");
-        }
+        message.success("Logged in");
+        history.push("/app");
       }
     } catch (error) {
       console.log(error);
@@ -34,50 +26,99 @@ function Login() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // message.useMessage(errorInfo);
+    console.log(errorInfo);
   };
 
   return (
-    <Form
-      style={{ margin: "100px" }}
-      {...layout}
-      name="basic"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: "6rem",
+      }}
     >
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: "Please input Correct Email!",
-            type: "email",
-          },
-        ]}
+      <Title
+        style={{
+          marginRight: "5.6rem",
+          marginTop: "8rem",
+          marginBottom: "10px",
+        }}
       >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
+        Log In
+      </Title>
+      <Form
+        style={{ margin: "70px" }}
+        // {...layout}
+        name="basic"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
-        <Input.Password />
-      </Form.Item>
+        <div
+          style={{
+            width: "20rem",
+            marginTop: "5px",
+            paddingTop: "10px",
+          }}
+        >
+          <Form.Item
+            style={{
+              width: "92.45%",
+              marginLeft: "1.4rem",
+            }}
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input Correct Email!",
+                type: "email",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-      {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password
+              style={{
+                width: "100%",
+              }}
+            />
+          </Form.Item>
+        </div>
+        {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
       </Form.Item> */}
-
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <div
+          style={{
+            width: "20rem",
+            marginLeft: "10rem ",
+            marginTop: "1rem",
+          }}
+        >
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </div>
+        <div
+          style={{
+            marginLeft: "6.3rem",
+          }}
+        >
+          <Link to="/signup">Don't have an account? Sign up</Link>
+        </div>
+      </Form>
+    </div>
   );
 }
 

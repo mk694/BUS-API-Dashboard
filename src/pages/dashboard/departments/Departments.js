@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import DepartmentModal from "./DepartmentModal";
 import DepartmentTable from "./DepartmentTable";
-import axios from "../../../services/axios";
+import { DepartmentApi } from "../../../services/api";
 function Departments() {
   const [form] = Form.useForm();
   const { Title } = Typography;
@@ -16,7 +16,7 @@ function Departments() {
   const getDepartments = async () => {
     try {
       setloading(true);
-      const response = await axios.get("/api/departments/all");
+      const response = await DepartmentApi.getAll();
 
       const newResponse = [...response.data].map((department) => {
         const object = {
@@ -47,7 +47,7 @@ function Departments() {
 
         const { title } = newData[index];
 
-        const response = await axios.put(`/api/departments/${key}`, {
+        const response = await DepartmentApi.update(key, {
           title,
         });
 
@@ -72,7 +72,7 @@ function Departments() {
       const newData = [...departments];
       const index = newData.findIndex((item) => key === item.key);
 
-      const response = await axios.delete(`/api/departments/${key}`);
+      const response = await DepartmentApi.delete(key);
 
       if (response) {
         getDepartments();
@@ -91,7 +91,7 @@ function Departments() {
   const submitDepartment = async (values) => {
     console.log("Values", values);
     try {
-      const response = await axios.post("/api/departments/add", values);
+      const response = await DepartmentApi.create(values);
 
       if (response) {
         getDepartments();
@@ -109,7 +109,7 @@ function Departments() {
 
     confirm();
     // setDepartments([]);
-  }, []);
+  }, [setDepartments]);
 
   return (
     <div>

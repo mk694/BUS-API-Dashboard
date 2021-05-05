@@ -1,8 +1,10 @@
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, Typography, Checkbox, message } from "antd";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { Admin } from "../services/api";
 
 function SignUp() {
+  const { Title } = Typography;
   const layout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 16 },
@@ -14,75 +16,140 @@ function SignUp() {
   const history = useHistory();
 
   const onFinish = async (values) => {
-    console.log("Success:", values);
-    try {
-      const response = await Admin.signUp(values);
-      console.log(response.data.token);
+    if (values.password !== values.c_password) {
+      message.error("passwords do not match");
+    } else {
+      try {
+        const { name, email, password } = values;
 
-      if (response) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        history.push("/dashboard");
-        message.success("Logged in");
+        const response = await Admin.signUp({ name, email, password });
+        console.log("Success", response.data);
+        if (response) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          history.push("/app");
+          message.success("Account Created");
+          message.success("Logging in successful!");
+        }
+      } catch (error) {
+        console.log(error);
+        message.error("Email already exists");
       }
-    } catch (error) {
-      console.log(error);
-      message.error("Email already exists");
     }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log(errorInfo);
   };
 
   return (
-    <Form
-      style={{ margin: "100px" }}
-      {...layout}
-      name="basic"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: "4.3rem",
+      }}
     >
-      <Form.Item
-        label="Full Name"
-        name="name"
-        rules={[{ required: true, message: "Please input your name!" }]}
+      <Title
+        style={{
+          marginRight: "4.6rem",
+          marginTop: "8rem",
+          marginBottom: "10px",
+        }}
       >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: "Please input correct email!",
-            type: "email",
-          },
-        ]}
+        Sign Up
+      </Title>
+      <Form
+        style={{ margin: "85px", marginRight: "12.1rem" }}
+        name="basic"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
-        <Input />
-      </Form.Item>
+        <div>
+          <Form.Item
+            label="Full Name"
+            name="name"
+            rules={[{ required: true, message: "Please input your name!" }]}
+          >
+            <Input
+              style={{
+                marginLeft: ".15rem",
+                width: "87.9%",
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input correct email!",
+                type: "email",
+              },
+            ]}
+          >
+            <Input
+              style={{
+                marginLeft: "2rem",
+                width: "80%",
+              }}
+            />
+          </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password />
-      </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password
+              style={{
+                marginLeft: ".5rem",
+                width: "87%",
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="c_password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password
+              style={{
+                marginLeft: ".9rem",
+                width: "81.9%",
+              }}
+            />
+          </Form.Item>
+        </div>
 
-      {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+        {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
       </Form.Item> */}
 
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item
+          style={{
+            width: "12rem",
+            marginLeft: "11rem ",
+            marginTop: "1rem",
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+        <div
+          style={{
+            marginLeft: "7rem",
+          }}
+        >
+          <Link to="/login"> Already have an account? Log in</Link>
+        </div>
+      </Form>
+    </div>
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import BusModal from "./BusModal";
 import BusTable from "./BusTable";
-import axios from "../../../services/axios";
+import { BusApi } from "../../../services/api";
 
 function Buses() {
   const [form] = Form.useForm();
@@ -17,8 +17,8 @@ function Buses() {
   const getBuses = async () => {
     try {
       setloading(true);
-      const response = await axios.get("/api/buses/all");
-
+      const response = await BusApi.getAll();
+      console.log("Bues,", buses);
       const newResponse = [...response.data].map((bus) => {
         const object = {
           ...bus,
@@ -46,10 +46,15 @@ function Buses() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { name, capacity, assignedRoute , assignedDriver } = newData[index];
+        const { name, capacity, assignedRoute, assignedDriver } = newData[
+          index
+        ];
 
-        const response = await axios.put(`/api/buses/${key}`, {
-          name, capacity, assignedRoute , assignedDriver ,
+        const response = await BusApi.update(key, {
+          name,
+          capacity,
+          assignedRoute,
+          assignedDriver,
         });
 
         if (response) {
@@ -73,7 +78,7 @@ function Buses() {
       const newData = [...buses];
       const index = newData.findIndex((item) => key === item.key);
 
-      const response = await axios.delete(`/api/buses/${key}`);
+      const response = await BusApi.delete(key);
 
       if (response) {
         getBuses();
@@ -92,7 +97,7 @@ function Buses() {
   const submitBus = async (values) => {
     console.log("Values", values);
     try {
-      const response = await axios.post("/api/buses/add", values);
+      const response = await BusApi.create(values);
 
       if (response) {
         getBuses();

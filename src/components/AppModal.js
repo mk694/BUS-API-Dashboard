@@ -34,7 +34,7 @@ const AppModal = () => {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <p>odalText</p>
+        <p>NOPE!</p>
       </Modal>
     </>
   );

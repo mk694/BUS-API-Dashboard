@@ -8,9 +8,11 @@ const axios = Axios.create({
   timeout: 10000,
 });
 
+const getToken = localStorage.getItem("Token");
+
 const axiosAuth = Axios.create({
   baseURL: URL,
-  headers: { Authorization: "token" },
+  headers: { authorization: getToken },
   timeout: 10000,
 });
 
@@ -21,45 +23,45 @@ export const Admin = {
 
   signIn: (data) => axios.post("/api/auth/signin", data),
 
-  logOut: () => axios.get("/api/auth/logout"),
+  logOut: () => axiosAuth.get("/api/auth/logout"),
 };
 
 // DRIVERS
 
-export const Drivers = {
+export const DriverApi = {
   getAll: () => axiosAuth.get("/api/drivers/all"),
-  post: (data) => axiosAuth.post("/api/drivers/add", data),
+  create: (data) => axiosAuth.post("/api/drivers/add", data),
   getOne: (id) => axiosAuth.get(`/api/drivers/${id}`),
-  update: (data, id) => axiosAuth.put(`/api/drivers/${id}`, data),
+  update: (id, data) => axiosAuth.put(`/api/drivers/${id}`, data),
   delete: (id) => axiosAuth.delete(`/api/drivers/${id}`),
 };
 
 // DEPARTMENTS
-export const Departments = {
-  getAll: () => axiosAuth.get("/api/departments/all"),
-  post: (data) => axiosAuth.post("/api/departments/add", data),
+export const DepartmentApi = {
+  getAll: () => axios.get("/api/departments/all"),
+  create: (data) => axiosAuth.post("/api/departments/add", data),
   getOne: (id) => axiosAuth.get(`/api/departments/${id}`),
-  update: (data, id) => axiosAuth.put(`/api/departments/${id}`, data),
+  update: (id, data) => axiosAuth.put(`/api/departments/${id}`, data),
   delete: (id) => axiosAuth.delete(`/api/departments/${id}`),
 };
 
 // STUDENTS
 
-export const Students = {
+export const StudentApi = {
   getAll: () => axiosAuth.get("/api/students/all"),
-  post: (data) => axiosAuth.post("/api/students/add", data),
+  create: (data) => axiosAuth.post("/api/students/add", data),
   getOne: (id) => axiosAuth.get(`/api/students/${id}`),
-  update: (data, id) => axiosAuth.put(`/api/students/${id}`, data),
+  update: (id, data) => axiosAuth.put(`/api/students/${id}`, data),
   delete: (id) => axiosAuth.delete(`/api/students/${id}`),
 };
 
 // BUSES
 
-export const Buses = {
+export const BusApi = {
   getAll: () => axiosAuth.get("/api/buses/all"),
-  post: (data) => axiosAuth.post("/api/buses/add", data),
+  create: (data) => axiosAuth.post("/api/buses/add", data),
   getOne: (id) => axiosAuth.get(`/api/buses/${id}`),
-  update: (data, id) => axiosAuth.put(`/api/buses/${id}`, data),
+  update: (id, data) => axiosAuth.put(`/api/buses/${id}`, data),
   delete: (id) => axiosAuth.delete(`/api/buses/${id}`),
 };
 

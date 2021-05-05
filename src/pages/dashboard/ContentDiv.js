@@ -1,46 +1,28 @@
 import React from "react";
 import Buses from "./buses/Buses";
-import Login from "../Login";
 
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import SignUp from "../Signup";
 import Admin from "./admin/Admin";
 import Students from "./students/Students";
 import Drivers from "./drivers/Drivers";
 import Departments from "./departments/Departments";
 import Dashboard from "./dashboard/Dashboard";
+import Routes from "./routes/Routes";
 
-function ContentDiv() {
+const ContentDiv = () => {
   return (
-    <>
-      <Switch>
-        <Route path="/buses">
-          <Buses />
-        </Route>
-        <Route path="/dashboard">
-          <Dashboard />
-        </Route>
-        <Route path="/departments">
-          <Departments />
-        </Route>
-        <Route path="/admin">
-          <Admin />
-        </Route>
-        <Route path="/drivers">
-          <Drivers />
-        </Route>
-        <Route path="/students">
-          <Students />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <SignUp />
-        </Route>
-      </Switch>
-    </>
+    <Switch>
+      <Route path="/app" exact component={Dashboard} />
+      <Route path="/app/buses" component={Buses} />
+      <Route path="/app/admin" component={Admin} />
+      <Route path="/app/departments" component={Departments} />
+      <Route path="/app/drivers" component={Drivers} />
+      <Route path="/app/students" component={Students} />
+      <Route path="/app/routes" component={Routes} />
+      {/* <Redirect to="/app" /> */}
+    </Switch>
   );
-}
+};
 
 export default ContentDiv;

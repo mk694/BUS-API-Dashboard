@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import DriverModal from "./DriverModal";
 import DriverTable from "./DriverTable";
-import axios from "../../../services/axios";
+import { DriverApi } from "../../../services/api";
 function Drivers() {
   const [form] = Form.useForm();
   const { Title } = Typography;
@@ -16,7 +16,7 @@ function Drivers() {
   const getDrivers = async () => {
     try {
       setloading(true);
-      const response = await axios.get("/api/drivers/all");
+      const response = await DriverApi.getAll();
 
       const newResponse = [...response.data].map((driver) => {
         const object = {
@@ -47,7 +47,7 @@ function Drivers() {
 
         const { name, phone, photo } = newData[index];
 
-        const response = await axios.put(`/api/drivers/${key}`, {
+        const response = await DriverApi.update(key, {
           name,
           phone,
           photo,
@@ -74,7 +74,7 @@ function Drivers() {
       const newData = [...drivers];
       const index = newData.findIndex((item) => key === item.key);
 
-      const response = await axios.delete(`/api/drivers/${key}`);
+      const response = await DriverApi.delete(key);
 
       if (response) {
         getDrivers();
@@ -92,7 +92,7 @@ function Drivers() {
 
   const submitDriver = async (values) => {
     try {
-      const response = await axios.post("/api/drivers/add", values);
+      const response = await DriverApi.create(values);
 
       if (response) {
         getDrivers();

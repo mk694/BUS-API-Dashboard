@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import StudentModal from "./StudentModal";
 import StudentTable from "./StudentTable";
-import axios from "../../../services/axios";
+import { StudentApi } from "../../../services/api";
+
 function Students() {
   const [form] = Form.useForm();
   const { Title } = Typography;
@@ -16,7 +17,7 @@ function Students() {
   const getStudents = async () => {
     try {
       setloading(true);
-      const response = await axios.get("/api/students/all");
+      const response = await StudentApi.getAll();
 
       const newResponse = [...response.data].map((student) => {
         const object = {
@@ -47,7 +48,7 @@ function Students() {
 
         const { name, email, password, phone, systemId, sex } = newData[index];
 
-        const response = await axios.put(`/api/students/${key}`, {
+        const response = await StudentApi.update(key, {
           name,
           email,
           password,
@@ -77,7 +78,7 @@ function Students() {
       const newData = [...students];
       const index = newData.findIndex((item) => key === item.key);
 
-      const response = await axios.delete(`/api/students/${key}`);
+      const response = await StudentApi.delete(key);
 
       if (response) {
         getStudents();
@@ -95,7 +96,7 @@ function Students() {
 
   const submitStudent = async (values) => {
     try {
-      const response = await axios.post("/api/students/add", values);
+      const response = await StudentApi.create(values);
 
       if (response) {
         getStudents();
