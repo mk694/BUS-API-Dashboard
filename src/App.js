@@ -14,26 +14,20 @@ import SignUp from "./pages/Signup";
 import AppLayout from "./pages/AppLayout";
 
 function App() {
-  const [isLogged, setIsLogged] = useState(false);
-
-  const token = localStorage.getItem("Token");
-
-  useEffect(() => {
-    if (token !== null) {
-      setIsLogged(true);
-    }
-  }, []);
-
   return (
-    <Switch>
-      <Route path="/login" component={isLogged ? AppLayout : Login} />
-      <Route path="/app" component={AppLayout} />
-
-      <Route path="/signup">
-        <SignUp />
-      </Route>
-      <Redirect to="/login" />
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/app" component={AppLayout} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={SignUp} />
+        <Route exact path="/">
+          <Redirect to="/app" />
+        </Route>
+        <Route path="*">
+          <Redirect to="/app" />
+        </Route>
+      </Switch>
+    </>
   );
 }
 

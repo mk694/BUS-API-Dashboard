@@ -8,11 +8,11 @@ const axios = Axios.create({
   timeout: 10000,
 });
 
-const getToken = localStorage.getItem("Token");
+const getToken = localStorage.getItem("token");
 
 const axiosAuth = Axios.create({
   baseURL: URL,
-  headers: { authorization: getToken },
+  headers: { Authorization: `Bearer  ${getToken}` },
   timeout: 10000,
 });
 

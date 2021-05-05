@@ -1,22 +1,29 @@
 import { Layout } from "antd";
-import { Redirect } from "react-router";
+import { useEffect, useState } from "react";
+import { Redirect, useHistory } from "react-router";
 import AppHeader from "../components/AppHeader";
 import Sidebar from "../components/Sidebar";
 import ContentDiv from "./dashboard/ContentDiv";
-import Login from "./Login";
 
 const { Header, Content, Sider } = Layout;
 function AppLayout() {
+  const history = useHistory();
+
+  useEffect(() => {
+    const loginHandler = () => {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      if (token == null) return history.push("/login");
+    };
+    return loginHandler();
+  }, []);
+
   return (
     <Layout>
       <Header
         style={{
           zIndex: 10,
           width: "100%",
-          display: "flex",
-          left: 2,
-          align: "center",
-          justifyContent: "space-between",
         }}
       >
         <AppHeader />

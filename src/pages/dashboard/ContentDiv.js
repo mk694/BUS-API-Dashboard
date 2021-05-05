@@ -1,8 +1,6 @@
-import React from "react";
 import Buses from "./buses/Buses";
 
 import { Redirect, Route, Switch } from "react-router-dom";
-import SignUp from "../Signup";
 import Admin from "./admin/Admin";
 import Students from "./students/Students";
 import Drivers from "./drivers/Drivers";
@@ -20,7 +18,6 @@ const ContentDiv = () => {
       <Route path="/app/drivers" component={Drivers} />
       <Route path="/app/students" component={Students} />
       <Route path="/app/routes" component={Routes} />
-      {/* <Redirect to="/app" /> */}
     </Switch>
   );
 };

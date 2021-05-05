@@ -28,7 +28,7 @@ function AppHeader() {
   const { Link } = Typography;
   return (
     <div style={styles.root}>
-      <Link href="/app">
+      <Link href="/">
         <Title style={styles.color}>Bus Management</Title>
       </Link>
     </div>

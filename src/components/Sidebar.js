@@ -15,13 +15,14 @@ import {
   TeamOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function Sidebar() {
   const history = useHistory();
   const location = useLocation();
   const { confirm } = Modal;
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   console.log(location.pathname);
   function showConfirm() {
@@ -33,10 +34,10 @@ function Sidebar() {
       content: "You will be redirected to Login Page",
       onOk() {
         try {
-          localStorage.removeItem("Token");
+          localStorage.removeItem("token");
           localStorage.removeItem("user");
-          history.push("/login");
-          message.warning("Logged out");
+          message.warning("Logged out success");
+          setIsLoggedIn(false);
         } catch (error) {
           console.log(error);
         }
@@ -45,6 +46,10 @@ function Sidebar() {
         history.push(`${location.pathname}`);
       },
     });
+  }
+
+  if (isLoggedIn == false) {
+    return <Redirect to="/" />;
   }
 
   return (
@@ -86,7 +91,7 @@ function Sidebar() {
         </Menu.Item>
 
         <Menu.Item
-          key="/app/logout"
+          key="/logout"
           danger
           onClick={() => showConfirm()}
           defaultActiveFirst
