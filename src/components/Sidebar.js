@@ -85,7 +85,7 @@ function Sidebar() {
         </Menu.Item>
 
         <Menu.Item
-          key="/logout"
+          key="/app/logout"
           danger
           onClick={() => showConfirm()}
           defaultActiveFirst
