@@ -1,4 +1,4 @@
-import { Form, Input, Button, message, Typography } from "antd";
+import { Form, Input, Button, message, Typography, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { Link } from "react-router-dom";
@@ -7,23 +7,30 @@ import { Admin } from "../services/api";
 function Login() {
   const { Title } = Typography;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null) {
-      setIsLoggedIn(true);
+      setIsLoggedIn(false);
     }
+    setIsLoggedIn(false);
   }, []);
 
   const onFinish = async (values) => {
     try {
+      setLoading(true);
       const response = await Admin.signIn(values);
-
       if (response) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        message.success("Logged in");
+        message.success("Logged in!");
         setIsLoggedIn(true);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -39,6 +46,16 @@ function Login() {
     <>
       {isLoggedIn ? (
         <Redirect to="/app" />
+      ) : loading ? (
+        <Spin
+          size="large"
+          style={{
+            position: "absolute",
+            top: "47%",
+            right: "50%",
+            transform: "translate(0, -50%)",
+          }}
+        />
       ) : (
         <div
           style={{

@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import AppHeader from "../components/AppHeader";
@@ -8,22 +8,41 @@ import ContentDiv from "./dashboard/ContentDiv";
 const { Header, Content, Sider } = Layout;
 function AppLayout() {
   const history = useHistory();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const loginHandler = () => {
       const token = localStorage.getItem("token");
-      console.log(token);
       if (token == null) return history.push("/login");
     };
     return loginHandler();
   }, []);
 
-  return (
+  return loading ? (
+    <Spin
+      size="large"
+      style={{
+        position: "absolute",
+        top: "47%",
+        right: "50%",
+        transform: "translate(0, -50%)",
+      }}
+    />
+  ) : (
     <Layout>
       <Header
+        theme="light"
         style={{
           zIndex: 10,
           width: "100%",
+          color: "white",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <AppHeader />

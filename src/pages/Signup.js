@@ -1,4 +1,4 @@
-import { Form, Input, Button, Typography, Checkbox, message } from "antd";
+import { Form, Input, Button, Typography, Checkbox, message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { Link } from "react-router-dom";
@@ -7,6 +7,11 @@ import { Admin } from "../services/api";
 function SignUp() {
   const { Title } = Typography;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,8 +25,8 @@ function SignUp() {
       message.error("passwords do not match");
     } else {
       try {
+        setLoading(true);
         const { name, email, password } = values;
-
         const response = await Admin.signUp({ name, email, password });
         console.log("Success", response.data);
         if (response) {
@@ -29,7 +34,8 @@ function SignUp() {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           setIsLoggedIn(true);
           message.success("Account Created");
-          message.success("Logging in successful!");
+          message.success("Logged in!");
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -46,6 +52,16 @@ function SignUp() {
     <>
       {isLoggedIn ? (
         <Redirect to="/app" />
+      ) : loading ? (
+        <Spin
+          size="large"
+          style={{
+            position: "absolute",
+            top: "47%",
+            right: "50%",
+            transform: "translate(0, -50%)",
+          }}
+        />
       ) : (
         <div
           style={{

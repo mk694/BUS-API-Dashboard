@@ -24,19 +24,18 @@ function Sidebar() {
   const { confirm } = Modal;
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  console.log(location.pathname);
   function showConfirm() {
     confirm({
       title: "Are you sure ?",
       icon: <ExclamationCircleOutlined />,
-      centered: "true",
+
       okText: "Log out",
       content: "You will be redirected to Login Page",
       onOk() {
         try {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-          message.warning("Logged out success");
+          message.warning("Logged out!");
           setIsLoggedIn(false);
         } catch (error) {
           console.log(error);
