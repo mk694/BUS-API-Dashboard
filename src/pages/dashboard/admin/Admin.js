@@ -86,7 +86,7 @@ function Admin() {
       admin: isAdmin(true),
     },
     {
-      key: "1",
+      key: "2",
       fullName: "Muhammd Moin",
       email: "capacity",
       password: "capacity",

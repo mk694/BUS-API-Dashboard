@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Input, Popconfirm, Form, Typography, Select } from "antd";
+import { Table, Input, Popconfirm, Form, Typography } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const EditableCell = ({
@@ -81,7 +81,6 @@ const DepartmentTable = ({
         return editable ? (
           <span>
             <Link
-              href="javascript:;"
               onClick={() => editSave(record.key)}
               style={{
                 marginRight: 8,

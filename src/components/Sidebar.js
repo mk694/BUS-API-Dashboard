@@ -1,12 +1,7 @@
-import { Divider, Menu, message, Modal } from "antd";
+import { Menu, message, Modal } from "antd";
 import {
   AppstoreOutlined,
   BarChartOutlined,
-  CloudOutlined,
-  // ShopOutlined,
-  // TeamOutlined,
-  UserOutlined,
-  UploadOutlined,
   VideoCameraOutlined,
   CarFilled,
   EnvironmentFilled,
@@ -16,7 +11,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Sidebar() {
   const history = useHistory();
@@ -47,7 +42,7 @@ function Sidebar() {
     });
   }
 
-  if (isLoggedIn == false) {
+  if (isLoggedIn === false) {
     return <Redirect to="/" />;
   }
 
@@ -105,11 +100,6 @@ function Sidebar() {
           <Link to="/app/logout">LogOut</Link>
         </Menu.Item>
       </Menu>
-      {/* <Layout className="site-layout" style={{ marginLeft: 200 }}>
-          <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
-        </Layout> */}
     </>
   );
 }

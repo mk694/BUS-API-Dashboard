@@ -15,7 +15,6 @@ function Departments() {
 
   const getDepartments = async () => {
     try {
-      setloading(true);
       const response = await DepartmentApi.getAll();
 
       const newResponse = [...response.data].map((department) => {
@@ -26,8 +25,8 @@ function Departments() {
         return object;
       });
       setDepartments(newResponse);
-      console.log(response.data);
       setloading(false);
+      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -105,11 +104,14 @@ function Departments() {
     }
   };
   useEffect(() => {
-    const confirm = async () => await getDepartments();
+    setloading(true);
 
-    confirm();
-    // setDepartments([]);
-  }, [setDepartments]);
+    getDepartments();
+
+    return () => {
+      setloading(false);
+    };
+  }, [setloading]);
 
   return (
     <div>

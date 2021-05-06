@@ -15,7 +15,6 @@ function Drivers() {
 
   const getDrivers = async () => {
     try {
-      setloading(true);
       const response = await DriverApi.getAll();
 
       const newResponse = [...response.data].map((driver) => {
@@ -26,8 +25,8 @@ function Drivers() {
         return object;
       });
       setDrivers(newResponse);
-      console.log(response.data);
       setloading(false);
+      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -106,11 +105,14 @@ function Drivers() {
     }
   };
   useEffect(() => {
-    const confirm = async () => await getDrivers();
+    setloading(true);
 
-    confirm();
-    // setDrivers([]);
-  }, []);
+    getDrivers();
+
+    return () => {
+      setloading(false);
+    };
+  }, [setloading]);
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import { Layout, Spin } from "antd";
 import { useEffect, useState } from "react";
-import { Redirect, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import AppHeader from "../components/AppHeader";
 import Sidebar from "../components/Sidebar";
 import ContentDiv from "./dashboard/ContentDiv";
@@ -20,7 +20,7 @@ function AppLayout() {
       if (token == null) return history.push("/login");
     };
     return loginHandler();
-  }, []);
+  }, [history]);
 
   return loading ? (
     <Spin

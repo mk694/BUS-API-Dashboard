@@ -16,7 +16,6 @@ function Students() {
 
   const getStudents = async () => {
     try {
-      setloading(true);
       const response = await StudentApi.getAll();
 
       const newResponse = [...response.data].map((student) => {
@@ -27,8 +26,8 @@ function Students() {
         return object;
       });
       setStudents(newResponse);
-      console.log(response.data);
       setloading(false);
+      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -110,11 +109,14 @@ function Students() {
     }
   };
   useEffect(() => {
-    const confirm = async () => await getStudents();
+    setloading(true);
 
-    confirm();
-    // setStudents([]);
-  }, []);
+    getStudents();
+
+    return () => {
+      setloading(false);
+    };
+  }, [setloading]);
 
   return (
     <div>

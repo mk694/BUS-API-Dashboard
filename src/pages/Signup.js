@@ -1,6 +1,6 @@
-import { Form, Input, Button, Typography, Checkbox, message, Spin } from "antd";
+import { Form, Input, Button, Typography, message, Spin } from "antd";
 import { useEffect, useState } from "react";
-import { Redirect, useHistory } from "react-router";
+import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { Admin } from "../services/api";
 

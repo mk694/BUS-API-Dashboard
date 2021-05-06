@@ -16,7 +16,6 @@ function Buses() {
 
   const getBuses = async () => {
     try {
-      setloading(true);
       const response = await BusApi.getAll();
       console.log("Bues,", buses);
       const newResponse = [...response.data].map((bus) => {
@@ -27,8 +26,8 @@ function Buses() {
         return object;
       });
       setBuses(newResponse);
-      console.log(response.data);
       setloading(false);
+      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -110,12 +109,17 @@ function Buses() {
       console.log(error.message);
     }
   };
-  useEffect(() => {
-    const confirm = async () => await getBuses();
 
-    confirm();
-    // setBuses([]);
-  }, []);
+  useEffect(() => {
+    setloading(true);
+
+    getBuses();
+
+    return () => {
+      setloading(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setloading]);
 
   return (
     <div>

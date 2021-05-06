@@ -125,7 +125,6 @@ const StudentTable = ({
         return editable ? (
           <span>
             <Link
-              href="javascript:;"
               onClick={() => editSave(record.key)}
               style={{
                 marginRight: 8,
