@@ -19,50 +19,51 @@ const axiosAuth = Axios.create({
 // Admin
 
 export const Admin = {
-  signUp: (data) => axios.post("/api/auth/signup", data),
+  signUp: async (data) => await axios.post("/api/auth/signup", data),
 
-  signIn: (data) => axios.post("/api/auth/signin", data),
+  signIn: async (data) => await axios.post("/api/auth/signin", data),
 
-  logOut: () => axiosAuth.get("/api/auth/logout"),
+  logOut: async () => await axiosAuth.get("/api/auth/logout"),
 };
 
 // DRIVERS
 
 export const DriverApi = {
-  getAll: () => axiosAuth.get("/api/drivers/all"),
-  create: (data) => axiosAuth.post("/api/drivers/add", data),
-  getOne: (id) => axiosAuth.get(`/api/drivers/${id}`),
-  update: (id, data) => axiosAuth.put(`/api/drivers/${id}`, data),
-  delete: (id) => axiosAuth.delete(`/api/drivers/${id}`),
+  getAll: async () => await axiosAuth.get("/api/drivers/all"),
+  create: async (data) => await axiosAuth.post("/api/drivers/add", data),
+  getOne: async (id) => await axiosAuth.get(`/api/drivers/${id}`),
+  update: async (id, data) => await axiosAuth.put(`/api/drivers/${id}`, data),
+  delete: async (id) => await axiosAuth.delete(`/api/drivers/${id}`),
 };
 
 // DEPARTMENTS
 export const DepartmentApi = {
-  getAll: () => axios.get("/api/departments/all"),
-  create: (data) => axiosAuth.post("/api/departments/add", data),
-  getOne: (id) => axiosAuth.get(`/api/departments/${id}`),
-  update: (id, data) => axiosAuth.put(`/api/departments/${id}`, data),
-  delete: (id) => axiosAuth.delete(`/api/departments/${id}`),
+  getAll: async () => await axios.get("/api/departments/all"),
+  create: async (data) => await axiosAuth.post("/api/departments/add", data),
+  getOne: async (id) => await axiosAuth.get(`/api/departments/${id}`),
+  update: async (id, data) =>
+    await axiosAuth.put(`/api/departments/${id}`, data),
+  delete: async (id) => await axiosAuth.delete(`/api/departments/${id}`),
 };
 
 // STUDENTS
 
 export const StudentApi = {
-  getAll: () => axiosAuth.get("/api/students/all"),
-  create: (data) => axiosAuth.post("/api/students/add", data),
-  getOne: (id) => axiosAuth.get(`/api/students/${id}`),
-  update: (id, data) => axiosAuth.put(`/api/students/${id}`, data),
-  delete: (id) => axiosAuth.delete(`/api/students/${id}`),
+  getAll: async () => await axiosAuth.get("/api/students/all"),
+  create: async (data) => await axiosAuth.post("/api/students/add", data),
+  getOne: async (id) => await axiosAuth.get(`/api/students/${id}`),
+  update: async (id, data) => await axiosAuth.put(`/api/students/${id}`, data),
+  delete: async (id) => await axiosAuth.delete(`/api/students/${id}`),
 };
 
 // BUSES
 
 export const BusApi = {
-  getAll: () => axiosAuth.get("/api/buses/all"),
-  create: (data) => axiosAuth.post("/api/buses/add", data),
-  getOne: (id) => axiosAuth.get(`/api/buses/${id}`),
-  update: (id, data) => axiosAuth.put(`/api/buses/${id}`, data),
-  delete: (id) => axiosAuth.delete(`/api/buses/${id}`),
+  getAll: async () => axiosAuth.get("/api/buses/all"),
+  create: async (data) => axiosAuth.post("/api/buses/add", data),
+  getOne: async (id) => axiosAuth.get(`/api/buses/${id}`),
+  update: async (id, data) => axiosAuth.put(`/api/buses/${id}`, data),
+  delete: async (id) => axiosAuth.delete(`/api/buses/${id}`),
 };
 
 // ROUTES

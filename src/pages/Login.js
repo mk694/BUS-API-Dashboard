@@ -14,10 +14,14 @@ function Login() {
   }, []);
 
   useEffect(() => {
+    let loggedIn = true;
+
     const token = localStorage.getItem("token");
-    if (token !== null) {
+    if (token !== null && loggedIn === true) {
       setIsLoggedIn(true);
     }
+
+    return () => (loggedIn = false);
   }, []);
 
   const onFinish = async (values) => {

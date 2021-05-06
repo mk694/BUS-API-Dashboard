@@ -11,11 +11,13 @@ function Buses() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   const [visible, setVisible] = useState(false);
 
   const getBuses = async () => {
     try {
+      setloading(true);
       const response = await BusApi.getAll();
       console.log("Bues,", buses);
       const newResponse = [...response.data].map((bus) => {
@@ -30,6 +32,7 @@ function Buses() {
       console.log(response.data);
     } catch (error) {
       console.log(error.message);
+      message.error(error.message);
     }
   };
 
@@ -106,23 +109,25 @@ function Buses() {
       setVisible(false);
     } catch (error) {
       message.error("Email already exist");
-      console.log(error.message);
+      console.log(error.response.message);
     }
   };
 
   useEffect(() => {
-    setloading(true);
+    setMounted(true);
 
-    getBuses();
-
+    if (mounted === true) {
+      getBuses();
+    }
     return () => {
-      setloading(false);
+      setMounted(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setloading]);
+  }, []);
 
   return (
     <div>
+      {loading}
       <Title level={2}>Buses</Title>
       <Button
         style={{
