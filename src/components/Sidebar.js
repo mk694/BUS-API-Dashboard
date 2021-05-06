@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { Admin } from "../services/api";
 
 function Sidebar() {
   const history = useHistory();
@@ -28,6 +29,7 @@ function Sidebar() {
       content: "You will be redirected to Login Page",
       onOk() {
         try {
+          Admin.logOut();
           localStorage.removeItem("token");
           localStorage.removeItem("user");
           message.warning("Logged out!");

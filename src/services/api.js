@@ -12,7 +12,7 @@ const getToken = localStorage.getItem("token");
 
 const axiosAuth = Axios.create({
   baseURL: URL,
-  headers: { Authorization: `Bearer ${getToken}` },
+  headers: { Authorization: `Bearer  ${getToken}` },
   timeout: 10000,
 });
 
