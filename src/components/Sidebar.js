@@ -67,9 +67,9 @@ function Sidebar() {
         >
           <Link to="/app">Dashboard</Link>
         </Menu.Item>
-        <Menu.Item key="/app/admin" icon={<VideoCameraOutlined />}>
+        {/* <Menu.Item key="/app/admin" icon={<VideoCameraOutlined />}>
           <Link to="/app/admin">Admin</Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="/app/buses" icon={<CarFilled />}>
           <Link to="/app/buses">Buses </Link>
         </Menu.Item>

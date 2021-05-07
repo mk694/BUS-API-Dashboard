@@ -10,11 +10,12 @@ function Drivers() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const getDrivers = async () => {
     try {
+      setloading(true);
       const response = await DriverApi.getAll();
 
       const newResponse = [...response.data].map((driver) => {
@@ -28,6 +29,7 @@ function Drivers() {
       setloading(false);
       console.log(response.data);
     } catch (error) {
+      message.error(error.message);
       console.log(error.message);
     }
   };
@@ -62,9 +64,10 @@ function Drivers() {
         setDrivers(newData);
         setEditingKey("");
       }
-    } catch (errInfo) {
-      message.error("Email already exist");
-      console.log("Validate Failed:", errInfo);
+    } catch (error) {
+      message.error(error.message);
+
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -84,8 +87,9 @@ function Drivers() {
 
       setDrivers(newData);
       setEditingKey("");
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+    } catch (error) {
+      message.error(error.message);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -100,19 +104,21 @@ function Drivers() {
       setDisable(false);
       setVisible(false);
     } catch (error) {
-      message.error("Email already exist");
+      message.error(error.message);
+
       console.log(error.message);
     }
   };
   useEffect(() => {
-    setloading(true);
+    setMounted(true);
 
-    getDrivers();
-
+    if (mounted === true) {
+      getDrivers();
+    }
     return () => {
-      setloading(false);
+      setMounted(false);
     };
-  }, [setloading]);
+  }, [setMounted]);
 
   return (
     <div>

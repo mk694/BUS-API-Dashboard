@@ -12,7 +12,6 @@ function Buses() {
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(false);
-
   const [visible, setVisible] = useState(false);
 
   const getBuses = async () => {
@@ -69,9 +68,9 @@ function Buses() {
         setBuses(newData);
         setEditingKey("");
       }
-    } catch (errInfo) {
+    } catch (error) {
       message.error("Email already exist");
-      console.log("Validate Failed:", errInfo);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -91,8 +90,8 @@ function Buses() {
 
       setBuses(newData);
       setEditingKey("");
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+    } catch (error) {
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -122,12 +121,10 @@ function Buses() {
     return () => {
       setMounted(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setMounted]);
 
   return (
     <div>
-      {loading}
       <Title level={2}>Buses</Title>
       <Button
         style={{
