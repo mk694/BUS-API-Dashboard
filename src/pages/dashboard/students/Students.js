@@ -11,11 +11,12 @@ function Students() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const getStudents = async () => {
     try {
+      setloading(true);
       const response = await StudentApi.getAll();
 
       const newResponse = [...response.data].map((student) => {
@@ -29,6 +30,7 @@ function Students() {
       setloading(false);
       console.log(response.data);
     } catch (error) {
+      message.error(error.message);
       console.log(error.message);
     }
   };
@@ -66,9 +68,9 @@ function Students() {
         setStudents(newData);
         setEditingKey("");
       }
-    } catch (errInfo) {
+    } catch (error) {
       message.error("Email already exist");
-      console.log("Validate Failed:", errInfo);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -88,8 +90,9 @@ function Students() {
 
       setStudents(newData);
       setEditingKey("");
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+    } catch (error) {
+      message.error(error.message);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -109,14 +112,14 @@ function Students() {
     }
   };
   useEffect(() => {
-    setloading(true);
-
-    getStudents();
-
+    setMounted(true);
+    if (mounted === true) {
+      getStudents();
+    }
     return () => {
-      setloading(false);
+      setMounted(false);
     };
-  }, [setloading]);
+  }, [setMounted]);
 
   return (
     <div>

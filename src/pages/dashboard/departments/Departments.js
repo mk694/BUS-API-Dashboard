@@ -10,11 +10,13 @@ function Departments() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const getDepartments = async () => {
     try {
+      setloading(true);
+
       const response = await DepartmentApi.getAll();
 
       const newResponse = [...response.data].map((department) => {
@@ -28,6 +30,7 @@ function Departments() {
       setloading(false);
       console.log(response.data);
     } catch (error) {
+      message.error(error.message);
       console.log(error.message);
     }
   };
@@ -60,9 +63,9 @@ function Departments() {
         setDepartments(newData);
         setEditingKey("");
       }
-    } catch (errInfo) {
+    } catch (error) {
       message.error("Email already exist");
-      console.log("Validate Failed:", errInfo);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -82,8 +85,9 @@ function Departments() {
 
       setDepartments(newData);
       setEditingKey("");
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+    } catch (error) {
+      message.error(error.message);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -99,19 +103,20 @@ function Departments() {
       setDisable(false);
       setVisible(false);
     } catch (error) {
-      message.error("Email already exist");
+      message.error(error.message);
       console.log(error.message);
     }
   };
   useEffect(() => {
-    setloading(true);
+    setMounted(true);
 
-    getDepartments();
-
+    if (mounted === true) {
+      getDepartments();
+    }
     return () => {
-      setloading(false);
+      setMounted(false);
     };
-  }, [setloading]);
+  }, [setMounted]);
 
   return (
     <div>

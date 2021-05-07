@@ -14,7 +14,7 @@ const ContentDiv = () => {
       <Switch>
         <Route path="/app" exact component={Dashboard} />
         <Route path="/app/buses" component={Buses} />
-        <Route path="/app/admin" component={Admin} />
+        {/* <Route path="/app/admin" component={Admin} /> */}
         <Route path="/app/departments" component={Departments} />
         <Route path="/app/drivers" component={Drivers} />
         <Route path="/app/students" component={Students} />

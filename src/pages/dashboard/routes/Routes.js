@@ -11,7 +11,6 @@ function Routes() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-
   const [visible, setVisible] = useState(false);
 
   const getRoutes = async () => {
@@ -83,13 +82,22 @@ function Routes() {
 
       setRoutes(newData);
       setEditingKey("");
+<<<<<<< HEAD
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
+=======
+    } catch (error) {
+      message.error(error.message);
+      console.log("Validate Failed:", error);
+>>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
     }
   };
 
   const submitRoute = async (values) => {
+<<<<<<< HEAD
     console.log("Values", values);
+=======
+>>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
     try {
       const response = await RouteApi.create(values);
 
@@ -105,6 +113,7 @@ function Routes() {
     }
   };
   useEffect(() => {
+<<<<<<< HEAD
     setloading(true);
 
     getRoutes();
@@ -120,6 +129,22 @@ function Routes() {
       <Title level={2}>Routes</Title>
 
       <Button
+=======
+    setMounted(true);
+
+    if (mounted === true) {
+      getRoutes();
+    }
+    return () => {
+      setMounted(false);
+    };
+  }, [setMounted]);
+
+  return (
+    <div>
+      <Title level={2}>Routes</Title>
+      {/* <Button
+>>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
         style={{
           float: "right",
           marginBottom: "10px",
@@ -132,18 +157,39 @@ function Routes() {
         }}
       >
         Add Item
+<<<<<<< HEAD
       </Button>
       {/* <Table bordered columns={columns} dataSource={routes} /> */}
 
    
       <RouteModal
+=======
+      </Button> */}
+      {/* <Table bordered columns={columns} dataSource={routes} /> */}
+
+      <RouteTable
+        routes={routes}
+        loading={loading}
+        editingKey={editingKey}
+        setEditingKey={setEditingKey}
+        deleted={deleteRoute}
+        editSave={updateRoute}
+        form={form}
+        setDisable={setDisable}
+      />
+      {/* <RouteModal
+>>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
         visible={visible}
         onCreate={(values) => submitRoute(values)}
         onCancel={() => {
           setVisible(false);
           setDisable(false);
         }}
+<<<<<<< HEAD
       />
+=======
+      /> */}
+>>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
     </div>
   );
 }

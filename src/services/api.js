@@ -67,12 +67,10 @@ export const BusApi = {
 };
 
 // ROUTES
-// DEPARTMENTS
 export const RouteApi = {
-  getAll: async () => await axios.get("/api/departments/all"),
-  create: async (data) => await axiosAuth.post("/api/departments/add", data),
-  getOne: async (id) => await axiosAuth.get(`/api/departments/${id}`),
-  update: async (id, data) =>
-    await axiosAuth.put(`/api/departments/${id}`, data),
-  delete: async (id) => await axiosAuth.delete(`/api/departments/${id}`),
+  getAll: async () => await axiosAuth.get("/api/routes/all"),
+  create: async (data) => await axiosAuth.post("/api/routes/add", data),
+  getOne: async (id) => await axiosAuth.get(`/api/routes/${id}`),
+  update: async (id, data) => await axiosAuth.put(`/api/routes/${id}`, data),
+  delete: async (id) => await axiosAuth.delete(`/api/routes/${id}`),
 };
