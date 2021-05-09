@@ -92,7 +92,7 @@ const DriverTable = ({
       title: "AssignedBus",
       dataIndex: "assignedBus",
       key: "assignedBus",
-      editable: true,
+      editable: false,
       render: (_, record) => {
         return record.assignedBus;
       },

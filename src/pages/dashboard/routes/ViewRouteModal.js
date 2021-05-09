@@ -49,7 +49,7 @@ const MyGreatPlace = (props) => {
   return <div style={props.disabled == false ? greatPlaceStyle:disabledPlaces} >{props.title}</div>;
 };
 
-const RouteModal = ({ visible, onCreate, onCancel }) => {
+const ViewRouteModal = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 5 },
@@ -185,4 +185,4 @@ const RouteModal = ({ visible, onCreate, onCancel }) => {
   );
 };
 
-export default RouteModal;
+export default ViewRouteModal;

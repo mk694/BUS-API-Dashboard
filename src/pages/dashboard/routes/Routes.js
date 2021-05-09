@@ -12,7 +12,10 @@ function Routes() {
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState({
+    stops:[],
+    title:''
+  });
 
   const getRoutes = async () => {
     try {
@@ -102,10 +105,11 @@ function Routes() {
   };
 
   const submitRoute = async (values) => {
-    const newArray = {
-      ...values,
-      stops: [...markers],
-    };
+    // const newArray = {
+    //   ...values,
+    //   stops: [...markers],
+    // };
+    const newArray = values;
     console.log("newArray", newArray);
     try {
       const response = await RouteApi.create(newArray);

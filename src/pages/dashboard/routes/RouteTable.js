@@ -6,6 +6,7 @@ import {
   Form,
   Typography,
   Select,
+  Col, Row,
   message,
 } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -95,16 +96,26 @@ const RouteTable = ({
       editable: true,
     },
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-      editable: true,
+      title: "Start Point",
+      dataIndex: "startPoint",
+      key: "startPoint",
+      editable: false,
+      render: (_, record) =>{
+       return <span>
+          {record?.stops[0].title || ''}
+        </span>
+      }
     },
     {
-      title: "Disabled",
-      dataIndex: "disabled",
-      key: "disabled",
-      editable: true,
+      title: "End Point",
+      dataIndex: "endPoint",
+      key: "endPoint",
+      editable: false,
+      render: (_, record) =>{
+       return <span>
+          {record?.stops[record.stops.length -1].title || ''}
+        </span>
+      }
     },
 
     {
@@ -114,11 +125,15 @@ const RouteTable = ({
       editable: false,
       render: (_, record) => {
         return (
+          <Row>
+            <Col span={12}>
           <Select>
             {record.stops.map((rec, i) => {
               return <Option value={rec.title}>{rec.title}</Option>;
             })}
           </Select>
+          </Col>
+          </Row>
         );
       },
     },

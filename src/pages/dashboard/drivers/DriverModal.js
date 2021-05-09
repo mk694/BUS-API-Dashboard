@@ -75,7 +75,7 @@ const DriverModal = ({ visible, onCreate, onCancel, buses }) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="assignedBus" label="AssignedBus">
+        {/* <Form.Item name="assignedBus" label="AssignedBus">
           <Select
             showSearch
             style={{ width: 200 }}
@@ -92,7 +92,7 @@ const DriverModal = ({ visible, onCreate, onCancel, buses }) => {
               );
             })}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Modal>
   );

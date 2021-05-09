@@ -141,8 +141,7 @@ function Drivers() {
     name: driver.name,
     phone: driver.phone,
     photo: driver.photo,
-    assignedBus_ID: driver.assignedBus?.name,
-    assignedBus: driver.assignedBus?._id,
+    assignedBus: driver.assignedBus?.name
   }));
 
   return (
