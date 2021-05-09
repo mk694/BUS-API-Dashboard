@@ -11,7 +11,7 @@ function Students() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
 
   const getStudents = async () => {
@@ -112,7 +112,6 @@ function Students() {
     }
   };
   useEffect(() => {
-    setMounted(true);
     if (mounted === true) {
       getStudents();
     }

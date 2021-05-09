@@ -2,23 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import BusModal from "./BusModal";
 import BusTable from "./BusTable";
-import { BusApi } from "../../../services/api";
+import { BusApi, DriverApi, RouteApi } from "../../../services/api";
 
 function Buses() {
   const [form] = Form.useForm();
   const { Title } = Typography;
   const [buses, setBuses] = useState([]);
+  const [routes, setRoutes] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
 
   const getBuses = async () => {
     try {
       setloading(true);
       const response = await BusApi.getAll();
-      console.log("Bues,", buses);
       const newResponse = [...response.data].map((bus) => {
         const object = {
           ...bus,
@@ -26,9 +27,11 @@ function Buses() {
         };
         return object;
       });
+      console.log(response.data);
+
       setBuses(newResponse);
       setloading(false);
-      console.log(response.data);
+      console.log("Response:", newResponse);
     } catch (error) {
       console.log(error.message);
       message.error(error.message);
@@ -47,15 +50,11 @@ function Buses() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { name, capacity, assignedRoute, assignedDriver } = newData[
-          index
-        ];
+        const { name, capacity } = newData[index];
 
         const response = await BusApi.update(key, {
           name,
           capacity,
-          assignedRoute,
-          assignedDriver,
         });
 
         if (response) {
@@ -96,7 +95,7 @@ function Buses() {
   };
 
   const submitBus = async (values) => {
-    console.log("Values", values);
+    console.log("values", values);
     try {
       const response = await BusApi.create(values);
 
@@ -113,15 +112,32 @@ function Buses() {
   };
 
   useEffect(() => {
-    setMounted(true);
+    getBuses();
+    const response = async () => {
+      try {
+        const myRoutes = await RouteApi.getAll();
+        const myDrivers = await DriverApi.getAll();
 
-    if (mounted === true) {
-      getBuses();
-    }
+        setRoutes(myRoutes.data);
+        setDrivers(myDrivers.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    response();
     return () => {
       setMounted(false);
     };
-  }, [setMounted]);
+  }, []);
+
+  const data = [...buses].map((bus) => ({
+    _id: bus.id,
+    key: bus.key,
+    name: bus.name,
+    capacity: bus.capacity,
+    assignedRoute: bus.assignedRoute.name,
+    assignedDriver: bus.assignedDriver.name,
+  }));
 
   return (
     <div>
@@ -143,7 +159,7 @@ function Buses() {
       {/* <Table bordered columns={columns} dataSource={buses} /> */}
 
       <BusTable
-        buses={buses}
+        buses={data}
         loading={loading}
         editingKey={editingKey}
         setEditingKey={setEditingKey}
@@ -151,9 +167,13 @@ function Buses() {
         editSave={updateBus}
         form={form}
         setDisable={setDisable}
+        routes={routes}
+        drivers={drivers}
       />
       <BusModal
         visible={visible}
+        routes={routes}
+        drivers={drivers}
         onCreate={(values) => submitBus(values)}
         onCancel={() => {
           setVisible(false);

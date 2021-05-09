@@ -1,8 +1,20 @@
-import React from "react";
-import { Modal, Form, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, Select } from "antd";
+import { DriverApi, RouteApi, StudentApi } from "../../../services/api";
+import { Route } from "react-router";
 
-const BusModal = ({ visible, onCreate, onCancel }) => {
+const BusModal = ({
+  visible,
+  onCreate,
+  onCancel,
+  routes,
+
+  drivers,
+}) => {
   const [form] = Form.useForm();
+
+  const { Option } = Select;
+
   const layout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 16 },
@@ -57,35 +69,50 @@ const BusModal = ({ visible, onCreate, onCancel }) => {
           rules={[
             {
               required: true,
+
               message: "Please input the capacity!",
             },
           ]}
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="assignedRoute"
-          label="AssignedRoute"
-          rules={[
-            {
-              required: true,
-              message: "Please input the assignedRoute!",
-            },
-          ]}
-        >
-          <Input />
+        {/*  */}
+        <Form.Item name="assignedRoute" label="AssignedRoute">
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Select a person"
+            onSearch={() => {}}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {routes.map((route, i) => {
+              return (
+                <Option key={i} value={route._id}>
+                  {route.name}
+                </Option>
+              );
+            })}
+          </Select>
         </Form.Item>
-        <Form.Item
-          name="assignedDriver"
-          label="AssignedDriver"
-          rules={[
-            {
-              required: true,
-              message: "Please input the assignedDriver!",
-            },
-          ]}
-        >
-          <Input />
+        <Form.Item name="assignedDriver" label="AssignedDriver">
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Select a person123"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {drivers.map((driver, i) => {
+              return (
+                <Option key={i} value={driver._id}>
+                  {driver.name}
+                </Option>
+              );
+            })}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

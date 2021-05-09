@@ -38,6 +38,7 @@ function Login() {
     } catch (error) {
       console.log(error);
       message.error("Incorrect email or password");
+      setLoading(false);
     }
   };
 

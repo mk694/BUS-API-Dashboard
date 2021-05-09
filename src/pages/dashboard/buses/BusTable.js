@@ -1,18 +1,21 @@
 import React from "react";
-import { Table, Input, Popconfirm, Form, Typography } from "antd";
+import { Table, Input, Popconfirm, Form, Typography, Select } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const EditableCell = ({
   editing,
+  rotues,
+  drivers,
   dataIndex,
   title,
   inputType,
   record,
   index,
   children,
+
   ...restProps
 }) => {
-  const inputNode = inputType === "text" && <Input />;
+  const inputNode = inputType;
   return (
     <td {...restProps}>
       {editing ? (
@@ -39,6 +42,8 @@ const EditableCell = ({
 
 const BusTable = ({
   buses,
+  routes,
+  drivers,
   loading,
   deleted,
   editingKey,
@@ -48,6 +53,7 @@ const BusTable = ({
   setDisable,
 }) => {
   const { Link } = Typography;
+  const { Option } = Select;
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -73,21 +79,25 @@ const BusTable = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
+      editable: true,
     },
     {
       title: "Capacity",
       dataIndex: "capacity",
       key: "capacity",
+      editable: true,
     },
     {
       title: "AssignedRoute",
       dataIndex: "assignedRoute",
       key: "assignedRoute",
+      editable: true,
     },
     {
       title: "AssignedDriver",
       dataIndex: "assignedDriver",
       key: "assignedDriver",
+      editable: true,
     },
     {
       title: "Actions",
@@ -155,12 +165,48 @@ const BusTable = ({
     if (!col.editable) {
       return col;
     }
-
     return {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex && "text",
+        inputType:
+          col.dataIndex === "assignedDriver" ? (
+            <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="Select a person123"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {drivers.map((driver, i) => {
+                return (
+                  <Option key={i} value={driver._id}>
+                    {driver.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          ) : col.dataIndex === "assignedRoute" ? (
+            <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="Select a person"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {routes.map((route, i) => {
+                return (
+                  <Option key={i} value={route._id}>
+                    {route.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          ) : (
+            <Input />
+          ),
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import RouteModal from "./RouteModal";
 import { RouteApi } from "../../../services/api";
-import GoogleMap from 'google-map-react';
-
+import RouteTable from "./RouteTable";
 function Routes() {
   const [form] = Form.useForm();
   const { Title } = Typography;
@@ -11,11 +10,16 @@ function Routes() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
+  const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [markers, setMarkers] = useState([]);
 
   const getRoutes = async () => {
     try {
+      setloading(true);
       const response = await RouteApi.getAll();
+
+      console.log("response", response);
 
       const newResponse = [...response.data].map((route) => {
         const object = {
@@ -24,10 +28,14 @@ function Routes() {
         };
         return object;
       });
+
+      console.log("newResponse");
+
       setRoutes(newResponse);
       setloading(false);
       console.log(response.data);
     } catch (error) {
+      message.error(error.message);
       console.log(error.message);
     }
   };
@@ -44,9 +52,13 @@ function Routes() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { title } = newData[index];
+        const {
+          name,
+          stops: { title },
+        } = newData[index];
 
         const response = await RouteApi.update(key, {
+          name,
           title,
         });
 
@@ -60,9 +72,9 @@ function Routes() {
         setRoutes(newData);
         setEditingKey("");
       }
-    } catch (errInfo) {
+    } catch (error) {
       message.error("Email already exist");
-      console.log("Validate Failed:", errInfo);
+      console.log("Validate Failed:", error);
     }
   };
 
@@ -82,24 +94,20 @@ function Routes() {
 
       setRoutes(newData);
       setEditingKey("");
-<<<<<<< HEAD
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-=======
     } catch (error) {
       message.error(error.message);
       console.log("Validate Failed:", error);
->>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
     }
   };
 
   const submitRoute = async (values) => {
-<<<<<<< HEAD
-    console.log("Values", values);
-=======
->>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
+    const newArray = {
+      ...values,
+      stops: [...markers],
+    };
+    console.log("newArray", newArray);
     try {
-      const response = await RouteApi.create(values);
+      const response = await RouteApi.create(newArray);
 
       if (response) {
         getRoutes();
@@ -108,30 +116,11 @@ function Routes() {
       setDisable(false);
       setVisible(false);
     } catch (error) {
-      message.error("Email already exist");
+      message.error(error.message);
       console.log(error.message);
     }
   };
   useEffect(() => {
-<<<<<<< HEAD
-    setloading(true);
-
-    getRoutes();
-
-    return () => {
-      setloading(false);
-    };
-  }, [setloading]);
-
- 
-  return (
-    <div>
-      <Title level={2}>Routes</Title>
-
-      <Button
-=======
-    setMounted(true);
-
     if (mounted === true) {
       getRoutes();
     }
@@ -140,11 +129,12 @@ function Routes() {
     };
   }, [setMounted]);
 
+  const data = [];
+
   return (
     <div>
       <Title level={2}>Routes</Title>
-      {/* <Button
->>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
+      <Button
         style={{
           float: "right",
           marginBottom: "10px",
@@ -157,14 +147,7 @@ function Routes() {
         }}
       >
         Add Item
-<<<<<<< HEAD
       </Button>
-      {/* <Table bordered columns={columns} dataSource={routes} /> */}
-
-   
-      <RouteModal
-=======
-      </Button> */}
       {/* <Table bordered columns={columns} dataSource={routes} /> */}
 
       <RouteTable
@@ -177,19 +160,20 @@ function Routes() {
         form={form}
         setDisable={setDisable}
       />
-      {/* <RouteModal
->>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
+      <RouteModal
         visible={visible}
-        onCreate={(values) => submitRoute(values)}
+        markers={markers}
+        setMarkers={setMarkers}
+        onCreate={(values) => {
+          console.log("Success:", values);
+
+          return submitRoute(values);
+        }}
         onCancel={() => {
           setVisible(false);
           setDisable(false);
         }}
-<<<<<<< HEAD
       />
-=======
-      /> */}
->>>>>>> eabc141543218feec5cca07db4e6bd683b2a1dc5
     </div>
   );
 }

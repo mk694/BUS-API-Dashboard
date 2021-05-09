@@ -10,7 +10,7 @@ function Drivers() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
 
   const getDrivers = async () => {
@@ -25,8 +25,10 @@ function Drivers() {
         };
         return object;
       });
+
       setDrivers(newResponse);
       setloading(false);
+
       console.log(response.data);
     } catch (error) {
       message.error(error.message);
@@ -110,7 +112,7 @@ function Drivers() {
     }
   };
   useEffect(() => {
-    setMounted(true);
+    let mounted = true;
 
     if (mounted === true) {
       getDrivers();

@@ -10,7 +10,7 @@ function Departments() {
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
 
   const getDepartments = async () => {
@@ -26,6 +26,8 @@ function Departments() {
         };
         return object;
       });
+
+      console.log("newResponse", newResponse);
       setDepartments(newResponse);
       setloading(false);
       console.log(response.data);
@@ -108,7 +110,7 @@ function Departments() {
     }
   };
   useEffect(() => {
-    setMounted(true);
+
 
     if (mounted === true) {
       getDepartments();

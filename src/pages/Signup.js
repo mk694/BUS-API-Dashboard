@@ -40,6 +40,7 @@ function SignUp() {
       } catch (error) {
         console.log(error);
         message.error("Email already exists");
+        setLoading(false);
       }
     }
   };

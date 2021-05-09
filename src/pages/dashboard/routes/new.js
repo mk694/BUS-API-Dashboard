@@ -1,6 +1,16 @@
-import React from "react";
-import { Table, Input, Popconfirm, Form, Typography, Select } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  Input,
+  Popconfirm,
+  Form,
+  Typography,
+  Select,
+  message,
+} from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { BusApi } from "../../../services/api";
+import { Option } from "antd/lib/mentions";
 
 const EditableCell = ({
   editing,
@@ -12,7 +22,39 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "text" && <Input />;
+  const [buses, setBuses] = useState([]);
+
+  useEffect(() => {
+    let mounted = false;
+
+    const getBuses = async () => {
+      try {
+        if (mounted == true) {
+          const response = await BusApi.getAll();
+          setBuses(response);
+        }
+      } catch (error) {
+        message.error(error.message);
+      }
+    };
+    getBuses();
+    return () => (mounted = false);
+  }, []);
+
+  const inputNode =
+    inputType == "assignedBus" ? (
+      <Input.Group compact>
+        <Select defaultValue="Select bus">
+          {buses.map((bus, index) => (
+            <div key={index}>
+              <Option value="bus._id">{bus.name}</Option>
+            </div>
+          ))}
+        </Select>
+      </Input.Group>
+    ) : (
+      inputType == "text" && <Input />
+    );
 
   return (
     <td {...restProps}>
@@ -38,8 +80,8 @@ const EditableCell = ({
   );
 };
 
-const StudentTable = ({
-  students,
+const RouteTable = ({
+  routes,
   loading,
   deleted,
   editingKey,
@@ -55,12 +97,8 @@ const StudentTable = ({
   const edit = (record) => {
     form.setFieldsValue({
       name: "",
-      email: "",
-      password: "",
       phone: "",
-      systemId: "",
-      sex: "",
-      // assignedBus,
+      photo: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -80,34 +118,17 @@ const StudentTable = ({
       editable: true,
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
       editable: true,
     },
     {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
+      title: "assignedBus",
+      dataIndex: "assignedBus",
+      key: "assignedBus",
       editable: true,
     },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-      editable: true,
-    },
-    {
-      title: "SystemId",
-      dataIndex: "systemId",
-      key: "systemId",
-    },
-    // {
-    //   title: "AssignedBus",
-    //   dataIndex: "assignedBus",
-    //   key: "assignedBus",
-    // },
-
     {
       title: "Actions",
       align: "center",
@@ -180,7 +201,7 @@ const StudentTable = ({
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === "text" && "text",
+        inputType: col.dataIndex == "assignedBus" ? "assignedBus" : "text",
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -197,7 +218,7 @@ const StudentTable = ({
           },
         }}
         bordered
-        dataSource={students}
+        dataSource={routes}
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{
@@ -208,4 +229,4 @@ const StudentTable = ({
   );
 };
 
-export default StudentTable;
+export default RouteTable;

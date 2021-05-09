@@ -1,6 +1,16 @@
-import React from "react";
-import { Table, Input, Popconfirm, Form, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  Input,
+  Popconfirm,
+  Form,
+  Typography,
+  Select,
+  message,
+} from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Option } from "antd/lib/mentions";
+import { data } from "./data";
 
 const EditableCell = ({
   editing,
@@ -12,7 +22,16 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "text" && <Input />;
+  const inputNode =
+    inputType === "disabled" ? (
+      <Select defaultValue={record.stops.map((stop) => stop.disabled)}>
+        <Option value="true">True</Option>
+        <Option value="false">False</Option>
+      </Select>
+    ) : (
+      <Input />
+    );
+
   return (
     <td {...restProps}>
       {editing ? (
@@ -54,8 +73,9 @@ const RouteTable = ({
   const edit = (record) => {
     form.setFieldsValue({
       name: "",
-      phone: "",
-      photo: "",
+      title: "",
+      disabled: "",
+      stops: [],
       ...record,
     });
     setEditingKey(record.key);
@@ -75,17 +95,34 @@ const RouteTable = ({
       editable: true,
     },
     {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
       editable: true,
     },
     {
-      title: "Photo",
-      dataIndex: "photo",
-      key: "photo",
+      title: "Disabled",
+      dataIndex: "disabled",
+      key: "disabled",
       editable: true,
     },
+
+    {
+      title: "Stops",
+      dataIndex: "id",
+      key: "stops",
+      editable: false,
+      render: (_, record) => {
+        return (
+          <Select>
+            {record.stops.map((rec, i) => {
+              return <Option value={rec.title}>{rec.title}</Option>;
+            })}
+          </Select>
+        );
+      },
+    },
+
     {
       title: "Actions",
       align: "center",
@@ -126,7 +163,6 @@ const RouteTable = ({
             <Popconfirm
               title="Are you sure？"
               okText="Yes"
-              // onConfirm={}
               cancelText="No"
               onConfirm={() => deleted(record.key)}
             >
@@ -158,7 +194,7 @@ const RouteTable = ({
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex && "text",
+        inputType: col.dataIndex === "disabled" ? "disabled" : "text",
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
