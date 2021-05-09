@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Select, InputNumber } from "antd";
 import { DriverApi, RouteApi, StudentApi } from "../../../services/api";
 import { Route } from "react-router";
 
@@ -69,19 +69,18 @@ const BusModal = ({
           rules={[
             {
               required: true,
-
-              message: "Please input the capacity!",
+              message: "Please input the capacity number !",
             },
           ]}
         >
-          <Input />
+          <InputNumber />
         </Form.Item>
         {/*  */}
         <Form.Item name="assignedRoute" label="AssignedRoute">
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="Select a person"
+            placeholder="Select a Route"
             onSearch={() => {}}
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -100,7 +99,7 @@ const BusModal = ({
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="Select a person123"
+            placeholder="Select a Driver"
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }

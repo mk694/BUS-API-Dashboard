@@ -73,6 +73,7 @@ function Routes() {
         setEditingKey("");
       }
     } catch (error) {
+      setDisable(false);
       message.error("Email already exist");
       console.log("Validate Failed:", error);
     }

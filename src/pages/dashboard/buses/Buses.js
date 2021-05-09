@@ -15,6 +15,7 @@ function Buses() {
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [data, setData] = useState([]);
 
   const getBuses = async () => {
     try {
@@ -32,6 +33,7 @@ function Buses() {
       setBuses(newResponse);
       setloading(false);
       console.log("Response:", newResponse);
+      console.log("BUSES", buses);
     } catch (error) {
       console.log(error.message);
       message.error(error.message);
@@ -49,12 +51,18 @@ function Buses() {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
+        console.log("NewBuses", buses);
+        console.log("Newdata", newData);
 
-        const { name, capacity } = newData[index];
-
+        const { name, capacity, assignedDriver, assignedRoute } = newData[
+          index
+        ];
+        console.log(name, capacity, assignedDriver, assignedRoute);
         const response = await BusApi.update(key, {
           name,
           capacity,
+          assignedDriver,
+          assignedRoute,
         });
 
         if (response) {
@@ -68,7 +76,8 @@ function Buses() {
         setEditingKey("");
       }
     } catch (error) {
-      message.error("Email already exist");
+      setDisable(false);
+      message.error(error.message);
       console.log("Validate Failed:", error);
     }
   };
@@ -106,38 +115,44 @@ function Buses() {
       setDisable(false);
       setVisible(false);
     } catch (error) {
-      message.error("Email already exist");
+      message.error(error.message);
       console.log(error.response.message);
     }
   };
 
   useEffect(() => {
-    getBuses();
     const response = async () => {
       try {
         const myRoutes = await RouteApi.getAll();
         const myDrivers = await DriverApi.getAll();
+        const data = await buses.map((bus) => ({
+          _id: bus._id,
+          key: bus.key,
+          name: bus.name,
+          capacity: bus.capacity,
+          assignedRoute_ID: bus.assignedRoute.name,
+          assignedDriver_ID: bus.assignedDriver.name,
+          assignedRoute: bus.assignedRoute._id,
+          assignedDriver: bus.assignedDriver._id,
+        }));
 
         setRoutes(myRoutes.data);
         setDrivers(myDrivers.data);
+        setData(data);
       } catch (error) {
         console.log(error);
       }
     };
     response();
+    getBuses();
+    console.log("daasas", data);
+
     return () => {
       setMounted(false);
     };
   }, []);
 
-  const data = [...buses].map((bus) => ({
-    _id: bus.id,
-    key: bus.key,
-    name: bus.name,
-    capacity: bus.capacity,
-    assignedRoute: bus.assignedRoute.name,
-    assignedDriver: bus.assignedDriver.name,
-  }));
+  useEffect(() => {}, []);
 
   return (
     <div>

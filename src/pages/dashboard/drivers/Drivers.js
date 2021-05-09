@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
 import DriverModal from "./DriverModal";
 import DriverTable from "./DriverTable";
-import { DriverApi } from "../../../services/api";
+import { BusApi, DriverApi } from "../../../services/api";
 function Drivers() {
   const [form] = Form.useForm();
   const { Title } = Typography;
   const [drivers, setDrivers] = useState([]);
+  const [buses, setBuses] = useState([]);
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [data, setData] = useState([]);
 
   const getDrivers = async () => {
     try {
@@ -47,13 +49,14 @@ function Drivers() {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
-
-        const { name, phone, photo } = newData[index];
+        console.log("Newdata", newData);
+        const { name, phone, photo, assignedBus } = newData[index];
 
         const response = await DriverApi.update(key, {
           name,
           phone,
           photo,
+          assignedBus,
         });
 
         if (response) {
@@ -67,6 +70,7 @@ function Drivers() {
         setEditingKey("");
       }
     } catch (error) {
+      setDisable(false);
       message.error(error.message);
 
       console.log("Validate Failed:", error);
@@ -112,11 +116,29 @@ function Drivers() {
     }
   };
   useEffect(() => {
-    let mounted = true;
+    const response = async () => {
+      try {
+        const myBuses = await BusApi.getAll();
+        const data = drivers.map((driver) => ({
+          _id: driver._id,
+          key: driver.key,
+          name: driver.name,
+          phone: driver.phone,
+          photo: driver.photo,
+          assignedBus_ID: driver.assignedBus.name,
+          assignedBus: driver.assignedBus._id,
+        }));
 
-    if (mounted === true) {
-      getDrivers();
-    }
+        setBuses(myBuses.data);
+        setData(data);
+        console.log("dasssssta", data);
+        getDrivers();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    response();
+    getDrivers();
     return () => {
       setMounted(false);
     };
@@ -142,7 +164,7 @@ function Drivers() {
       {/* <Table bordered columns={columns} dataSource={drivers} /> */}
 
       <DriverTable
-        drivers={drivers}
+        data={data}
         loading={loading}
         editingKey={editingKey}
         setEditingKey={setEditingKey}
@@ -150,9 +172,11 @@ function Drivers() {
         editSave={updateDriver}
         form={form}
         setDisable={setDisable}
+        buses={buses}
       />
       <DriverModal
         visible={visible}
+        buses={buses}
         onCreate={(values) => submitDriver(values)}
         onCancel={() => {
           setVisible(false);

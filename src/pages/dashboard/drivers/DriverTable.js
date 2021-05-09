@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Input, Popconfirm, Form, Typography } from "antd";
+import { Table, Input, Popconfirm, Form, Typography, Select } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const EditableCell = ({
@@ -12,7 +12,7 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "text" && <Input />;
+  const inputNode = inputType;
   return (
     <td {...restProps}>
       {editing ? (
@@ -38,7 +38,8 @@ const EditableCell = ({
 };
 
 const DriverTable = ({
-  drivers,
+  data,
+  buses,
   loading,
   deleted,
   editingKey,
@@ -48,6 +49,7 @@ const DriverTable = ({
   setDisable,
 }) => {
   const { Link } = Typography;
+  const { Option } = Select;
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -85,6 +87,15 @@ const DriverTable = ({
       dataIndex: "photo",
       key: "photo",
       editable: true,
+    },
+    {
+      title: "AssignedBus",
+      dataIndex: "assignedBus",
+      key: "assignedBus",
+      editable: true,
+      render: (_, record) => {
+        return record.assignedBus_ID;
+      },
     },
     {
       title: "Actions",
@@ -158,7 +169,27 @@ const DriverTable = ({
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex && "text",
+        inputType:
+          col.dataIndex === "assignedBus" ? (
+            <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="Select a Bus"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {buses.map((bus, i) => {
+                return (
+                  <Option key={i} value={bus._id}>
+                    {bus.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          ) : (
+            <Input />
+          ),
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -175,7 +206,7 @@ const DriverTable = ({
           },
         }}
         bordered
-        dataSource={drivers}
+        dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{

@@ -1,7 +1,7 @@
 import React from "react";
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Select } from "antd";
 
-const DriverModal = ({ visible, onCreate, onCancel }) => {
+const DriverModal = ({ visible, onCreate, onCancel, buses }) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 5 },
@@ -74,6 +74,24 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
           ]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item name="assignedBus" label="AssignedBus">
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Select a Bus"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {buses.map((bus, i) => {
+              return (
+                <Select.Option key={i} value={bus._id}>
+                  {bus.name}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

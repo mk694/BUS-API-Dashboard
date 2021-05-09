@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Input, Popconfirm, Form, Typography, Select } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
@@ -54,15 +54,16 @@ const BusTable = ({
 }) => {
   const { Link } = Typography;
   const { Option } = Select;
+  const [ID, setID] = useState("");
 
   const isEditing = (record) => record.key === editingKey;
 
   const edit = (record) => {
     form.setFieldsValue({
       name: "",
-      capacity: "",
-      assignedRoute: "",
-      assignedDriver: "",
+      capacity: Number,
+      assignedRoute: {},
+      assignedDriver: {},
       ...record,
     });
     setEditingKey(record.key);
@@ -92,12 +93,18 @@ const BusTable = ({
       dataIndex: "assignedRoute",
       key: "assignedRoute",
       editable: true,
+      render: (_, record) => {
+        return record.assignedRoute_ID;
+      },
     },
     {
       title: "AssignedDriver",
       dataIndex: "assignedDriver",
       key: "assignedDriver",
       editable: true,
+      render: (_, record) => {
+        return record.assignedDriver_ID;
+      },
     },
     {
       title: "Actions",
@@ -167,50 +174,57 @@ const BusTable = ({
     }
     return {
       ...col,
-      onCell: (record) => ({
-        record,
-        inputType:
-          col.dataIndex === "assignedDriver" ? (
-            <Select
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Select a person123"
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {drivers.map((driver, i) => {
-                return (
-                  <Option key={i} value={driver._id}>
-                    {driver.name}
-                  </Option>
-                );
-              })}
-            </Select>
-          ) : col.dataIndex === "assignedRoute" ? (
-            <Select
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Select a person"
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              {routes.map((route, i) => {
-                return (
-                  <Option key={i} value={route._id}>
-                    {route.name}
-                  </Option>
-                );
-              })}
-            </Select>
-          ) : (
-            <Input />
-          ),
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
+      onCell: (record) => {
+        return {
+          record: buses,
+          inputType:
+            col.dataIndex === "assignedDriver" ? (
+              <Form.Item name="assignedDriver" label="AssignedDriver">
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select a Driver"
+                  filterOption={(input, option) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {drivers.map((driver, i) => {
+                    setID(driver._id);
+                    return (
+                      <Option key={i} value={driver._id}>
+                        {driver.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            ) : col.dataIndex === "assignedRoute" ? (
+              <Select
+                showSearch
+                style={{ width: 200 }}
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
+                {routes.map((route, i) => {
+                  return (
+                    <Option key={i} value={route._id}>
+                      {route.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            ) : (
+              <Input />
+            ),
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: isEditing(record),
+        };
+      },
     };
   });
   return (
