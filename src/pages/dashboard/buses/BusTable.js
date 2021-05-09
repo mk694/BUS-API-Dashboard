@@ -179,27 +179,24 @@ const BusTable = ({
           record: data,
           inputType:
             col.dataIndex === "assignedDriver" ? (
-              <Form.Item name="assignedDriver" label="AssignedDriver">
-                <Select
-                  showSearch
-                  style={{ width: 200 }}
-                  placeholder="Select a Driver"
-                  filterOption={(input, option) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {drivers.map((driver, i) => {
-                    setID(driver._id);
-                    return (
-                      <Option key={i} value={driver._id}>
-                        {driver.name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
+              <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select a Driver"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
+                {drivers.map((driver, i) => {
+                  setID(driver._id);
+                  return (
+                    <Option key={i} value={driver._id}>
+                      {driver.name}
+                    </Option>
+                  );
+                })}
+              </Select>
             ) : col.dataIndex === "assignedRoute" ? (
               <Select
                 showSearch

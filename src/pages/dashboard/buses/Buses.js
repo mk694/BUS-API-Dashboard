@@ -27,7 +27,6 @@ function Buses() {
         };
         return object;
       });
-      console.log(response.data);
 
       setBuses(newResponse);
       setloading(false);
