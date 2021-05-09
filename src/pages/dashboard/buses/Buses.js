@@ -15,7 +15,6 @@ function Buses() {
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [data, setData] = useState([]);
 
   const getBuses = async () => {
     try {
@@ -125,34 +124,31 @@ function Buses() {
       try {
         const myRoutes = await RouteApi.getAll();
         const myDrivers = await DriverApi.getAll();
-        const data = await buses.map((bus) => ({
-          _id: bus._id,
-          key: bus.key,
-          name: bus.name,
-          capacity: bus.capacity,
-          assignedRoute_ID: bus.assignedRoute.name,
-          assignedDriver_ID: bus.assignedDriver.name,
-          assignedRoute: bus.assignedRoute._id,
-          assignedDriver: bus.assignedDriver._id,
-        }));
 
         setRoutes(myRoutes.data);
         setDrivers(myDrivers.data);
-        setData(data);
       } catch (error) {
         console.log(error);
       }
     };
     response();
     getBuses();
-    console.log("daasas", data);
 
     return () => {
       setMounted(false);
     };
   }, []);
 
-  useEffect(() => {}, []);
+  const data = buses.map((bus) => ({
+    _id: bus._id,
+    key: bus.key,
+    name: bus.name,
+    capacity: bus.capacity,
+    assignedRoute_ID: bus.assignedRoute?.name,
+    assignedDriver_ID: bus.assignedDriver?.name,
+    assignedRoute: bus.assignedRoute?._id,
+    assignedDriver: bus.assignedDriver?._id,
+  }));
 
   return (
     <div>
@@ -174,7 +170,7 @@ function Buses() {
       {/* <Table bordered columns={columns} dataSource={buses} /> */}
 
       <BusTable
-        buses={data}
+        data={data}
         loading={loading}
         editingKey={editingKey}
         setEditingKey={setEditingKey}

@@ -41,7 +41,7 @@ const EditableCell = ({
 };
 
 const BusTable = ({
-  buses,
+  data,
   routes,
   drivers,
   loading,
@@ -176,7 +176,7 @@ const BusTable = ({
       ...col,
       onCell: (record) => {
         return {
-          record: buses,
+          record: data,
           inputType:
             col.dataIndex === "assignedDriver" ? (
               <Form.Item name="assignedDriver" label="AssignedDriver">
@@ -237,7 +237,7 @@ const BusTable = ({
           },
         }}
         bordered
-        dataSource={buses}
+        dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{

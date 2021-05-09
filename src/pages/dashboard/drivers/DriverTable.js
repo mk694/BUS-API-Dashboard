@@ -94,7 +94,7 @@ const DriverTable = ({
       key: "assignedBus",
       editable: true,
       render: (_, record) => {
-        return record.assignedBus_ID;
+        return record.assignedBus;
       },
     },
     {
@@ -168,7 +168,7 @@ const DriverTable = ({
     return {
       ...col,
       onCell: (record) => ({
-        record,
+        record: data,
         inputType:
           col.dataIndex === "assignedBus" ? (
             <Select

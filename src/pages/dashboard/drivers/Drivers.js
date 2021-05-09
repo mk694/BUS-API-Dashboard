@@ -13,7 +13,6 @@ function Drivers() {
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [data, setData] = useState([]);
 
   const getDrivers = async () => {
     try {
@@ -31,6 +30,7 @@ function Drivers() {
       setDrivers(newResponse);
       setloading(false);
 
+      console.log("newResponse", response.data);
       console.log(response.data);
     } catch (error) {
       message.error(error.message);
@@ -60,9 +60,9 @@ function Drivers() {
         });
 
         if (response) {
-          getDrivers();
           setDisable(false);
           message.success("Item updated");
+          getDrivers();
         }
       } else {
         newData.push(row);
@@ -100,6 +100,7 @@ function Drivers() {
   };
 
   const submitDriver = async (values) => {
+    console.log("values submit", values);
     try {
       const response = await DriverApi.create(values);
 
@@ -119,19 +120,9 @@ function Drivers() {
     const response = async () => {
       try {
         const myBuses = await BusApi.getAll();
-        const data = drivers.map((driver) => ({
-          _id: driver._id,
-          key: driver.key,
-          name: driver.name,
-          phone: driver.phone,
-          photo: driver.photo,
-          assignedBus_ID: driver.assignedBus.name,
-          assignedBus: driver.assignedBus._id,
-        }));
 
         setBuses(myBuses.data);
-        setData(data);
-        console.log("dasssssta", data);
+
         getDrivers();
       } catch (error) {
         console.log(error);
@@ -143,6 +134,16 @@ function Drivers() {
       setMounted(false);
     };
   }, [setMounted]);
+
+  const data = drivers.map((driver) => ({
+    _id: driver._id,
+    key: driver.key,
+    name: driver.name,
+    phone: driver.phone,
+    photo: driver.photo,
+    assignedBus_ID: driver.assignedBus?.name,
+    assignedBus: driver.assignedBus?._id,
+  }));
 
   return (
     <div>
