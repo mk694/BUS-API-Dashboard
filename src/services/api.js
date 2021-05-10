@@ -16,6 +16,8 @@ const axiosAuth = Axios.create({
   timeout: 10000,
 });
 
+
+
 // Admin
 
 export const Admin = {
@@ -46,6 +48,16 @@ export const DepartmentApi = {
   delete: async (id) => await axiosAuth.delete(`/api/departments/${id}`),
 };
 
+// SUPPORTS
+export const SupportApi = {
+  getAll: async () => await axios.get("/api/supports/all"),
+  create: async (data) => await axiosAuth.post("/api/supports/add", data),
+  getOne: async (id) => await axiosAuth.get(`/api/supports/${id}`),
+  update: async (id, data) =>
+    await axiosAuth.put(`/api/supports/${id}`, data),
+  delete: async (id) => await axiosAuth.delete(`/api/supports/${id}`),
+};
+
 // STUDENTS
 
 export const StudentApi = {
@@ -54,6 +66,7 @@ export const StudentApi = {
   getOne: async (id) => await axiosAuth.get(`/api/students/${id}`),
   update: async (id, data) => await axiosAuth.put(`/api/students/${id}`, data),
   delete: async (id) => await axiosAuth.delete(`/api/students/${id}`),
+  queryStudent: async (data) => await axios.get('/api/students?systemId=' + data.systemId + '&email='+data.email + '&password='+ data.password)
 };
 
 // BUSES

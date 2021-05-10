@@ -85,6 +85,9 @@ function Sidebar() {
         <Menu.Item key="/app/routes" icon={<EnvironmentFilled />}>
           <Link to="/app/routes">Routes</Link>
         </Menu.Item>
+        <Menu.Item key="/app/supports" icon={<EnvironmentFilled />}>
+          <Link to="/app/supports">Support Center</Link>
+        </Menu.Item>
 
         <Menu.Item
           key="/app/logout"

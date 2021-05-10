@@ -1,17 +1,48 @@
-import React from "react";
-import { Modal, Form, Input, Radio } from "antd";
+import React, { useState } from "react";
+import { Modal, Form, Input, Radio, Upload, message, Button  } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
 
-const DriverModal = ({ visible, onCreate, onCancel }) => {
+
+
+
+const StudentModal = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 16 },
   };
+  const props = {
+    name: 'myFile',
+    action: 'http://localhost:8080/api/auth/upload',
+    headers: {
+      authorization: 'authorization-text',
+    }
+  }
+
+ 
+  const [slipPhoto, SetSlipPhoto] = useState();
+
+  const handleChange = (e)=>{
+    console.log('change',e);
+    if(e.file.status == 'done'){
+      // set the file url 
+      alert('uploaded file');
+      let imgUrl = e.file.response.file;
+      console.log('use', imgUrl)
+      if(imgUrl){
+        SetSlipPhoto(imgUrl);
+      }
+    }
+
+  }
+
+
 
   const onSubmit = () => {
     form
       .validateFields()
       .then((values) => {
+        values.slipPhoto = slipPhoto;
         form.resetFields();
         onCreate(values);
       })
@@ -116,9 +147,16 @@ const DriverModal = ({ visible, onCreate, onCancel }) => {
             <Radio value="Female">Female</Radio>
           </Radio.Group>
         </Form.Item>
+
+        <Form.Item>
+        <Upload  {...props}  onChange={(e)=> handleChange(e)}
+        data={{name:'testing'}}>
+    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+  </Upload>
+        </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default DriverModal;
+export default StudentModal;

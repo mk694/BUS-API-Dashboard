@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, Form, message } from "antd";
-import StudentModal from "./StudentModal";
-import StudentTable from "./StudentTable";
-import { StudentApi } from "../../../services/api";
-
-function Students() {
+import SupportModal from "./SupportModal";
+import SupportTable from "./SupportTable";
+import { SupportApi } from "../../../services/api";
+function Supports() {
   const [form] = Form.useForm();
   const { Title } = Typography;
-  const [students, setStudents] = useState([]);
+  const [supports, setSupports] = useState([]);
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  const getStudents = async () => {
+  const getSupports = async () => {
     try {
       setloading(true);
-      const response = await StudentApi.getAll();
-      console.log('re', response);
-      const newResponse = [...response.data].map((student) => {
+
+      const response = await SupportApi.getAll();
+
+      const newResponse = [...response.data].map((support) => {
         const object = {
-          ...student,
-          key: student._id,
+          ...support,
+          key: support._id,
         };
         return object;
       });
-      setStudents(newResponse);
+
+      console.log("newResponse", newResponse);
+      setSupports(newResponse);
       setloading(false);
       console.log(response.data);
     } catch (error) {
@@ -35,10 +37,10 @@ function Students() {
     }
   };
 
-  const updateStudent = async (key) => {
+  const updateSupport = async (key) => {
     try {
       const row = await form.validateFields();
-      const newData = [...students];
+      const newData = [...supports];
       const index = newData.findIndex((item) => key === item.key);
 
       // console.log(name);
@@ -47,25 +49,20 @@ function Students() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { name, email, password, phone, systemId, sex } = newData[index];
+        const { title } = newData[index];
 
-        const response = await StudentApi.update(key, {
-          name,
-          email,
-          password,
-          phone,
-          systemId,
-          sex,
+        const response = await SupportApi.update(key, {
+          title,
         });
 
         if (response) {
-          getStudents();
+          getSupports();
           setDisable(false);
           message.success("Item updated");
         }
       } else {
         newData.push(row);
-        setStudents(newData);
+        setSupports(newData);
         setEditingKey("");
       }
     } catch (error) {
@@ -75,21 +72,21 @@ function Students() {
     }
   };
 
-  const deleteStudent = async (key) => {
+  const deleteSupport = async (key) => {
     try {
-      const newData = [...students];
+      const newData = [...supports];
       const index = newData.findIndex((item) => key === item.key);
 
-      const response = await StudentApi.delete(key);
+      const response = await SupportApi.delete(key);
 
       if (response) {
-        getStudents();
+        getSupports();
         message.warning("Item deleted");
       }
 
       newData.splice(index, 1);
 
-      setStudents(newData);
+      setSupports(newData);
       setEditingKey("");
     } catch (error) {
       message.error(error.message);
@@ -97,24 +94,27 @@ function Students() {
     }
   };
 
-  const submitStudent = async (values) => {
+  const submitSupport = async (values) => {
+    console.log("Values", values);
     try {
-      const response = await StudentApi.create(values);
+      const response = await SupportApi.create(values);
 
       if (response) {
-        getStudents();
+        getSupports();
         message.success("Item Added");
       }
       setDisable(false);
       setVisible(false);
     } catch (error) {
-      message.error("Email already exist");
+      message.error(error.message);
       console.log(error.message);
     }
   };
   useEffect(() => {
+
+
     if (mounted === true) {
-      getStudents();
+      getSupports();
     }
     return () => {
       setMounted(false);
@@ -123,7 +123,7 @@ function Students() {
 
   return (
     <div>
-      <Title level={2}>Students</Title>
+      <Title level={2}>Supports</Title>
       <Button
         style={{
           float: "right",
@@ -138,21 +138,21 @@ function Students() {
       >
         Add Item
       </Button>
-      {/* <Table bordered columns={columns} dataSource={students} /> */}
+      {/* <Table bordered columns={columns} dataSource={supports} /> */}
 
-      <StudentTable
-        students={students}
+      <SupportTable
+        supports={supports}
         loading={loading}
         editingKey={editingKey}
         setEditingKey={setEditingKey}
-        deleted={deleteStudent}
-        editSave={updateStudent}
+        deleted={deleteSupport}
+        editSave={updateSupport}
         form={form}
         setDisable={setDisable}
       />
-      <StudentModal
+      <SupportModal
         visible={visible}
-        onCreate={(values) => submitStudent(values)}
+        onCreate={(values) => submitSupport(values)}
         onCancel={() => {
           setVisible(false);
           setDisable(false);
@@ -161,4 +161,4 @@ function Students() {
     </div>
   );
 }
-export default Students;
+export default Supports;

@@ -5,6 +5,7 @@ import Admin from "./admin/Admin";
 import Students from "./students/Students";
 import Drivers from "./drivers/Drivers";
 import Departments from "./departments/Departments";
+import Supports from "./supports/Supports";
 import Dashboard from "./dashboard/Dashboard";
 import Routes from "./routes/Routes";
 
@@ -19,6 +20,7 @@ const ContentDiv = () => {
         <Route path="/app/drivers" component={Drivers} />
         <Route path="/app/students" component={Students} />
         <Route path="/app/routes" component={Routes} />
+        <Route path="/app/supports" component={Supports} />
       </Switch>
       <Redirect to="/app" />
     </>

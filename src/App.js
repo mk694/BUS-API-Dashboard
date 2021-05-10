@@ -6,6 +6,7 @@ import "./App.css";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import AppLayout from "./pages/AppLayout";
+import StudentPortal from "./pages/StudentPortal";
 
 function App() {
   return (
@@ -13,9 +14,10 @@ function App() {
       <Switch>
         <Route path="/app" component={AppLayout} />
         <Route path="/login" component={Login} />
+        <Route path="/student-portal" component={StudentPortal} />
         <Route path="/signup" component={SignUp} />
         <Route exact path="/">
-          <Redirect to="/app" />
+          <Redirect to="/student-portal" />
         </Route>
       </Switch>
     </>

@@ -1,7 +1,10 @@
 import React from "react";
-import { Table, Input, Popconfirm, Form, Typography, Image, Select } from "antd";
+import { Table, Input, Popconfirm, Form, Typography } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-const { Option } = Select;
+
+
+const { TextArea } = Input;
+
 
 const EditableCell = ({
   editing,
@@ -13,7 +16,7 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType;
+  const inputNode = inputType === "text" && <Input />;
   return (
     <td {...restProps}>
       {editing ? (
@@ -38,8 +41,8 @@ const EditableCell = ({
   );
 };
 
-const StudentTable = ({
-  students,
+const SupportTable = ({
+  supports,
   loading,
   deleted,
   editingKey,
@@ -54,15 +57,7 @@ const StudentTable = ({
 
   const edit = (record) => {
     form.setFieldsValue({
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      systemId: "",
-      sex: "",
-      slipPhoto:"",
-      slipVerified:null,
-      // assignedBus,
+      Title: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -76,61 +71,35 @@ const StudentTable = ({
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      editable: true
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      editable: true
-    },
-    {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
+      title: "Student Name",
+      dataIndex: "studentId.name",
+      key: "studentId.name",
       editable: true,
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-      editable: true,
-    },
-    {
-      title: "SystemId",
-      dataIndex: "systemId",
-      key: "systemId",
-    },
-    {
-      title: "Slip Photo",
-      dataIndex: "slipPhoto",
-      key: "slipPhoto",
-      render: (_,record) =>{
-        return  <Image
-        width={200}
-        src={record.slipPhoto || "https://www.wkbn.com/wp-content/uploads/sites/48/2020/06/missing-generic.jpg"}
-      />
-      },
-
-    },
-    {
-      title: "slipVerified",
-      dataIndex: "slipVerified",
-      key: "slipVerified",
-      editable: true,
-      render: (_,record) =>{
-        return <span>{String(record.slipVerified)} </span>
+      render: (_, record) => {
+        return 
+        <div>
+          {record.studentId.name}
+        </div>
       }
     },
-    // {
-    //   title: "AssignedBus",
-    //   dataIndex: "assignedBus",
-    //   key: "assignedBus",
-    // },
-
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      editable: true,
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      editable: true,
+    },
+    {
+      title: "Message",
+      dataIndex: "message",
+      key: "message",
+      editable: true,
+    },
     {
       title: "Actions",
       align: "center",
@@ -194,8 +163,6 @@ const StudentTable = ({
       },
     },
   ];
-
-
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -205,24 +172,8 @@ const StudentTable = ({
       ...col,
       onCell: (record) => ({
         record,
-        inputType:
-            col.dataIndex == "slipVerified" ? (
-              <Select
-                showSearch
-                style={{ width: 200 }}
-                placeholder="Select a Driver"
-              >
-                    <Option key={'as'} value={true}>
-                      true
-                    </Option>
-                    <Option key={'a3'} value={false}>
-                      false
-                    </Option>
-              </Select>
-            )  : (
-              <span>yoyoyo</span>
-            ),
-            dataIndex: col.dataIndex,
+        inputType: col.dataIndex && "text",
+        dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
       }),
@@ -238,7 +189,7 @@ const StudentTable = ({
           },
         }}
         bordered
-        dataSource={students}
+        dataSource={supports}
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{
@@ -249,4 +200,4 @@ const StudentTable = ({
   );
 };
 
-export default StudentTable;
+export default SupportTable;
