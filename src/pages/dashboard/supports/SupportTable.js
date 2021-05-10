@@ -72,21 +72,14 @@ const SupportTable = ({
   const columns = [
     {
       title: "Student Name",
-      dataIndex: "studentId.name",
-      key: "studentId.name",
+      dataIndex: "studentId",
+      key: "studentId",
       editable: true,
       render: (_, record) => {
-        return 
-        <div>
+        return <div>
           {record.studentId.name}
         </div>
       }
-    },
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-      editable: true,
     },
     {
       title: "Title",

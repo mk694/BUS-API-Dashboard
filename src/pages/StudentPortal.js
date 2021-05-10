@@ -6,17 +6,43 @@ import { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { StudentApi } from "../services/api";
+import {SupportApi } from '../services/api';
+const { TextArea } = Input;
 
 function StudentPortal() {
   const { Title } = Typography;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState();
+  const [title, setTitle] = useState('');
+  const [msg, setMsg] = useState('');
+
+
+
   
   useEffect(() => {
     setLoading(false);
   }, []);
 
+
+
+const onSubmit = () =>{
+  console.log('student', student);
+  setLoading(true);
+  let data = {
+    title,
+    message:msg,
+    studentId: student._id
+  }
+  console.log('data', data);
+  SupportApi.create(data).then(res=>{
+message.success('Support Ticket Created');
+setTitle('');
+setMsg('');
+
+    setLoading(false);
+  })
+}
 
 
 
@@ -51,8 +77,8 @@ function StudentPortal() {
       }
     } catch (error) {
       console.log(error);
-      message.error("Incorrect email or password");
       setLoading(false);
+      // message.error("Incorrect email or password");
     }
   };
 
@@ -200,10 +226,10 @@ function StudentPortal() {
       <Badge status={student.verified == true ? 'success':'warning'} text={student.verified == true ? 'Active':'Not Active'} />
     </Descriptions.Item>
     <Descriptions.Item label="Gender ">{student.sex}</Descriptions.Item>
-    <Descriptions.Item label="Discount">
-      <Image src={student.slipPhoto || 'https://www.wkbn.com/wp-content/uploads/sites/48/2020/06/missing-generic.jpg'} style={{width:'250px'}} />
+    <Descriptions.Item label="Slip Photo">
+      <Image src={student.slipPhoto ||'https://www.wkbn.com/wp-content/uploads/sites/48/2020/06/missing-generic.jpg'} style={{width:'250px'}} />
     </Descriptions.Item>
-    <Descriptions.Item label="Config Info">
+    {/* <Descriptions.Item label="Config Info">
       Data disk type: MongoDB
       <br />
       Database version: 3.4
@@ -215,9 +241,17 @@ function StudentPortal() {
       Replication factor: 3
       <br />
       Region: East China 1<br />
-    </Descriptions.Item>
+    </Descriptions.Item> */}
   </Descriptions>
+
               
+              </Col>
+              <Col style={{margin:'10px'}}>
+              <h2>Send Message To Support</h2>
+
+              <Input  value={title} placeholder="title"  style={{marginBottom:'10px'}} onChange={(e)=> setTitle(e.target.value)} />
+              <TextArea  value={msg} rows={3} placeholder="Write your Message!" onChange={(e)=> setMsg(e.target.value)}  />
+              <Button style={{marginTop:'5px'}} onClick={onSubmit}>Send Message</Button>
               </Col>
             </Row>)
             
