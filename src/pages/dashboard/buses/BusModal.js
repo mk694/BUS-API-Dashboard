@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select, InputNumber } from "antd";
-import { DriverApi, RouteApi, StudentApi } from "../../../services/api";
 import { Route } from "react-router";
 
 const BusModal = ({
@@ -8,7 +7,6 @@ const BusModal = ({
   onCreate,
   onCancel,
   routes,
-
   drivers,
 }) => {
   const [form] = Form.useForm();

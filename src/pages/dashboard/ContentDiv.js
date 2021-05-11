@@ -8,6 +8,7 @@ import Departments from "./departments/Departments";
 import Supports from "./supports/Supports";
 import Dashboard from "./dashboard/Dashboard";
 import Routes from "./routes/Routes";
+import RouteDetails from "./routes/RouteDetail";
 
 const ContentDiv = () => {
   return (
@@ -20,6 +21,7 @@ const ContentDiv = () => {
         <Route path="/app/drivers" component={Drivers} />
         <Route path="/app/students" component={Students} />
         <Route path="/app/routes" component={Routes} />
+        <Route path="/app/routes/:id" render={(props)=> <RouteDetails {...props} />}  />
         <Route path="/app/supports" component={Supports} />
       </Switch>
       <Redirect to="/app" />

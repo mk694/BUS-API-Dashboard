@@ -9,7 +9,7 @@ import {
   Col, Row,
   message,
 } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, PlayCircleOutlined } from "@ant-design/icons";
 import { Option } from "antd/lib/mentions";
 import { data } from "./data";
 
@@ -181,7 +181,20 @@ const RouteTable = ({
               cancelText="No"
               onConfirm={() => deleted(record.key)}
             >
-              <DeleteOutlined
+              <PlayCircleOutlined
+                style={
+                  editingKey !== ""
+                    ? {
+                        display: "none",
+                      }
+                    : {
+                        color: "green",
+                        marginLeft: "24px",
+                      }
+                }
+                disabled={editingKey !== ""}
+              />
+ <DeleteOutlined
                 style={
                   editingKey !== ""
                     ? {

@@ -3,7 +3,7 @@ import GoogleMap from "google-map-react";
 function GoogleMaps({ setMark, markers, setMarkers, mark }) {
   const YOUR_GOOGLE_MAP_API_KEY = "AIzaSyA7jbl5TnQofa0ALQyN6uWXoui92Kw_Otg";
   const center = [33.738045, 73.084488];
-  const zoom = 7;
+  const zoom = 10;
   const K_WIDTH = 40;
   const K_HEIGHT = 40;
 

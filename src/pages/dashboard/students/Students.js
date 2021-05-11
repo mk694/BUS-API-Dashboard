@@ -3,6 +3,7 @@ import { Button, Typography, Form, message } from "antd";
 import StudentModal from "./StudentModal";
 import StudentTable from "./StudentTable";
 import { StudentApi } from "../../../services/api";
+import { DepartmentApi } from "../../../services/api";
 
 function Students() {
   const [form] = Form.useForm();
@@ -13,6 +14,7 @@ function Students() {
   const [editingKey, setEditingKey] = useState("");
   const [mounted, setMounted] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [departments, setDepartments] = useState([]);
 
   const getStudents = async () => {
     try {
@@ -44,19 +46,29 @@ function Students() {
       // console.log(name);
       if (index > -1) {
         const item = newData[index];
+        console.log('ITEM',item);
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { name, email, password, phone, systemId, sex } = newData[index];
+        let { name, email, password, phone, systemId, sex , slipPhoto, slipVerified, department,verified} = newData[index];
 
-        const response = await StudentApi.update(key, {
+        slipVerified = slipVerified === 'true'? true:false;
+        verified = verified === 'true'? true:false;
+      let req=  {
           name,
           email,
           password,
           phone,
           systemId,
           sex,
-        });
+          slipPhoto, 
+          slipVerified,
+          verified,
+          department
+        };
+        console.log('request', req)
+
+        const response = await StudentApi.update(key, req);
 
         if (response) {
           getStudents();
@@ -99,6 +111,7 @@ function Students() {
 
   const submitStudent = async (values) => {
     try {
+      console.log('response', values);
       const response = await StudentApi.create(values);
 
       if (response) {
@@ -113,9 +126,18 @@ function Students() {
     }
   };
   useEffect(() => {
+    const response = async () => {
+      try {
+        const myDepartments = await DepartmentApi.getAll();
+        setDepartments(myDepartments.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     if (mounted === true) {
       getStudents();
     }
+    response();
     return () => {
       setMounted(false);
     };
@@ -153,6 +175,7 @@ function Students() {
       <StudentModal
         visible={visible}
         onCreate={(values) => submitStudent(values)}
+        departments={departments}
         onCancel={() => {
           setVisible(false);
           setDisable(false);

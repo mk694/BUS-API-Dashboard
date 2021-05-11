@@ -94,6 +94,17 @@ const SupportTable = ({
       editable: true,
     },
     {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      editable: true,
+      render: (_,record)=>{
+        return (
+          <div> {String(record.status)}</div>
+        )
+      }
+    },
+    {
       title: "Actions",
       align: "center",
       dataIndex: "operation",

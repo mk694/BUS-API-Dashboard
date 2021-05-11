@@ -32,7 +32,8 @@ const onSubmit = () =>{
   let data = {
     title,
     message:msg,
-    studentId: student._id
+    studentId: student._id,
+    status: 'active'
   }
   console.log('data', data);
   SupportApi.create(data).then(res=>{
@@ -64,7 +65,7 @@ setMsg('');
       const response = await StudentApi.queryStudent(values);
       console.log('res', response.data);
 
-      if (response && response.data) {
+      if (response && response.data && response.data.length >0) {
         setStudent(response.data);
         // localStorage.setItem("token", response.data.token);
         // localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -162,7 +163,7 @@ setMsg('');
                 <Input />
               </Form.Item>
 
-              <Form.Item
+              {/* <Form.Item
                 label="Password"
                 name="password"
                 rules={[
@@ -174,7 +175,7 @@ setMsg('');
                     width: "100%",
                   }}
                 />
-              </Form.Item>
+              </Form.Item> */}
             </div>
             {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
@@ -201,10 +202,8 @@ setMsg('');
             </div>
           </Form>
 
-
-
           {
-            student && 
+            student && student.systemId ?
             (<Row>
               <Col>
               <Descriptions title="User Info" bordered>
@@ -217,7 +216,7 @@ setMsg('');
     <Descriptions.Item label="Updated At">{new Date(student?.updatedAt).toUTCString()}</Descriptions.Item>
     <Descriptions.Item label="System ID">
     <Tag color={'green'} key={student.systemId}>
-              {student.systemId.toUpperCase()}
+              {student.systemId?.toUpperCase() || ''}
             </Tag></Descriptions.Item>
     {/* <Descriptions.Item label="Created At" span={2}>
     {student.createdAt ? new Date(student?.createdAt).toUTCString() : ''}
@@ -254,6 +253,7 @@ setMsg('');
               <Button style={{marginTop:'5px'}} onClick={onSubmit}>Send Message</Button>
               </Col>
             </Row>)
+            :<div>No Profile Found!</div>
             
           }
         </div>

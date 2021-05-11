@@ -62,6 +62,8 @@ const StudentTable = ({
       sex: "",
       slipPhoto:"",
       slipVerified:null,
+      verified:null, 
+      department:'',
       // assignedBus,
       ...record,
     });
@@ -76,6 +78,12 @@ const StudentTable = ({
 
   const columns = [
     {
+      title: "SystemId",
+      dataIndex: "systemId",
+      key: "systemId",
+      defaultSortOrder: 'descend'
+    },
+     {
       title: "Name",
       dataIndex: "name",
       key: "name",
@@ -100,10 +108,14 @@ const StudentTable = ({
       editable: true,
     },
     {
-      title: "SystemId",
-      dataIndex: "systemId",
-      key: "systemId",
+      title: "Department",
+      dataIndex: "department",
+      key: "department",
+      render: (_,record) =>{
+        return <div>{record.department.title}</div>
+      }
     },
+    
     {
       title: "Slip Photo",
       dataIndex: "slipPhoto",
@@ -125,6 +137,15 @@ const StudentTable = ({
         return <span>{String(record.slipVerified)} </span>
       }
     },
+    {
+      title: "Account Status",
+      dataIndex: "verified",
+      key: "verified",
+      editable: true,
+      render: (_,record) =>{
+        return <span>{String(record.verified)} </span>
+      }
+    },
     // {
     //   title: "AssignedBus",
     //   dataIndex: "assignedBus",
@@ -140,7 +161,10 @@ const StudentTable = ({
         return editable ? (
           <span>
             <Link
-              onClick={() => editSave(record.key)}
+              onClick={() => { 
+                console.log('editx', record);
+                editSave(record.key)}
+              }
               style={{
                 marginRight: 8,
               }}
@@ -206,22 +230,44 @@ const StudentTable = ({
       onCell: (record) => ({
         record,
         inputType:
-            col.dataIndex == "slipVerified" ? (
+            col.dataIndex === "slipVerified" ? (
               <Select
                 showSearch
                 style={{ width: 200 }}
-                placeholder="Select a Driver"
+                placeholder="Select Status"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
               >
-                    <Option key={'as'} value={true}>
-                      true
+                    <Option key={'slipVerified'} value={'true'}>
+                      True
                     </Option>
-                    <Option key={'a3'} value={false}>
-                      false
+                    <Option key={'slipVerified2'} value={'false'}>
+                      False
                     </Option>
               </Select>
-            )  : (
-              <span>yoyoyo</span>
-            ),
+            )   : (
+              <Input />
+            ) ||  
+            col.dataIndex === "verified" ? (
+              <Select
+                style={{ width: 200 }}
+                placeholder="Account Status"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                    <Option key={'verified1'} value={'true'}>
+                      True
+                    </Option>
+                    <Option key={'verifiedd2'} value={'false'}>
+                      False
+                    </Option>
+              </Select>
+            )   : (
+              <Input />
+            ) 
+            ,
             dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),

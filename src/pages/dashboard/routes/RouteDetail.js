@@ -3,10 +3,10 @@ import { Button, Typography, Form, message } from "antd";
 import RouteModal from "./RouteModal";
 import { RouteApi } from "../../../services/api";
 import RouteTable from "./RouteTable";
-function Routes() {
+function RouteDetails() {
   const [form] = Form.useForm();
   const { Title } = Typography;
-  const [routes, setRoutes] = useState([]);
+  const [RouteDetails, setRouteDetails] = useState([]);
   const [loading, setloading] = useState(false);
   const [disable, setDisable] = useState(false);
   const [editingKey, setEditingKey] = useState("");
@@ -17,7 +17,7 @@ function Routes() {
     title:''
   });
 
-  const getRoutes = async () => {
+  const getRouteDetails = async () => {
     try {
       setloading(true);
       const response = await RouteApi.getAll();
@@ -34,7 +34,7 @@ function Routes() {
 
       console.log("newResponse");
 
-      setRoutes(newResponse);
+      setRouteDetails(newResponse);
       setloading(false);
       console.log(response.data);
     } catch (error) {
@@ -46,7 +46,7 @@ function Routes() {
   const updateRoute = async (key) => {
     try {
       const row = await form.validateFields();
-      const newData = [...routes];
+      const newData = [...RouteDetails];
       const index = newData.findIndex((item) => key === item.key);
 
       // console.log(name);
@@ -66,13 +66,13 @@ function Routes() {
         });
 
         if (response) {
-          getRoutes();
+          getRouteDetails();
           setDisable(false);
           message.success("Item updated");
         }
       } else {
         newData.push(row);
-        setRoutes(newData);
+        setRouteDetails(newData);
         setEditingKey("");
       }
     } catch (error) {
@@ -84,19 +84,19 @@ function Routes() {
 
   const deleteRoute = async (key) => {
     try {
-      const newData = [...routes];
+      const newData = [...RouteDetails];
       const index = newData.findIndex((item) => key === item.key);
 
       const response = await RouteApi.delete(key);
 
       if (response) {
-        getRoutes();
+        getRouteDetails();
         message.warning("Item deleted");
       }
 
       newData.splice(index, 1);
 
-      setRoutes(newData);
+      setRouteDetails(newData);
       setEditingKey("");
     } catch (error) {
       message.error(error.message);
@@ -115,7 +115,7 @@ function Routes() {
       const response = await RouteApi.create(newArray);
 
       if (response) {
-        getRoutes();
+        getRouteDetails();
         message.success("Item Added");
       }
       setDisable(false);
@@ -127,7 +127,7 @@ function Routes() {
   };
   useEffect(() => {
     if (mounted === true) {
-      getRoutes();
+      getRouteDetails();
     }
     return () => {
       setMounted(false);
@@ -138,7 +138,7 @@ function Routes() {
 
   return (
     <div>
-      <Title level={2}>Routes</Title>
+      <Title level={2}>RouteDetails</Title>
       <Button
         style={{
           float: "right",
@@ -153,10 +153,10 @@ function Routes() {
       >
         Add Item
       </Button>
-      {/* <Table bordered columns={columns} dataSource={routes} /> */}
+      {/* <Table bordered columns={columns} dataSource={RouteDetails} /> */}
 
       <RouteTable
-        routes={routes}
+        RouteDetails={RouteDetails}
         loading={loading}
         editingKey={editingKey}
         setEditingKey={setEditingKey}
@@ -168,7 +168,6 @@ function Routes() {
       <RouteModal
         visible={visible}
         markers={markers}
-        width={1000}
         setMarkers={setMarkers}
         onCreate={(values) => {
           console.log("Success:", values);
@@ -183,4 +182,4 @@ function Routes() {
     </div>
   );
 }
-export default Routes;
+export default RouteDetails;

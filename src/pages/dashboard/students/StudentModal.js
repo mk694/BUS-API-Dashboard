@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Radio, Upload, message, Button  } from "antd";
+import { Modal, Form, Input, Radio, Upload, message, Button , Select } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 
+const { Option } = Select;
 
 
 
-const StudentModal = ({ visible, onCreate, onCancel }) => {
+const StudentModal = ({ visible, onCreate, onCancel, departments }) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 5 },
@@ -131,6 +132,26 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
         >
           <Input />
         </Form.Item>
+        <Form.Item name="department" label="department">
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Select a Department"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {departments.map((department, i) => {
+              return (
+                <Option key={i} value={department._id}>
+                  {department.title}
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+
+
         <Form.Item
           name="sex"
           label="Gender"
@@ -151,7 +172,7 @@ const StudentModal = ({ visible, onCreate, onCancel }) => {
         <Form.Item>
         <Upload  {...props}  onChange={(e)=> handleChange(e)}
         data={{name:'testing'}}>
-    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+    <Button icon={<UploadOutlined />}>Click to Upload Challan</Button>
   </Upload>
         </Form.Item>
       </Form>
