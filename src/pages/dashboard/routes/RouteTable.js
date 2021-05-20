@@ -93,6 +93,7 @@ const RouteTable = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
+      sorter: (a, b) => a.name.length - b.name.length,
       editable: true,
     },
     {
@@ -102,7 +103,7 @@ const RouteTable = ({
       editable: false,
       render: (_, record) =>{
        return <span>
-          {record?.stops[0].title || ''}
+          {record.stops.length >0 ? record?.stops[0].title : ''}
         </span>
       }
     },
@@ -113,7 +114,7 @@ const RouteTable = ({
       editable: false,
       render: (_, record) =>{
        return <span>
-          {record?.stops[record.stops.length -1].title || ''}
+          {record.stops.length >0  ? record?.stops[record.stops.length -1].title : ''}
         </span>
       }
     },

@@ -50,13 +50,12 @@ function Students() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        let { name, email, password, phone, systemId, sex , slipPhoto, slipVerified, department,verified} = newData[index];
+        let { name, password, phone, systemId, sex , slipPhoto, slipVerified, department,verified} = newData[index];
 
         slipVerified = slipVerified === 'true'? true:false;
         verified = verified === 'true'? true:false;
       let req=  {
           name,
-          email,
           password,
           phone,
           systemId,

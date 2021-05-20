@@ -71,6 +71,7 @@ const DepartmentTable = ({
       dataIndex: "title",
       key: "title",
       editable: true,
+      sorter: (a, b) => a.title.length - b.title.length
     },
     {
       title: "Actions",

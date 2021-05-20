@@ -25,6 +25,8 @@ export const Admin = {
 
   signIn: async (data) => await axios.post("/api/auth/signin", data),
 
+  getStatistics: async () => await axios.get("/api/auth/statistics"),
+
   logOut: async () => await axiosAuth.get("/api/auth/logout"),
 };
 

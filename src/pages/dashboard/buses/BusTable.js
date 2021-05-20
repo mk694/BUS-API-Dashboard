@@ -81,18 +81,23 @@ const BusTable = ({
       dataIndex: "name",
       key: "name",
       editable: true,
+      sorter: (a, b) => a.name.length - b.name.length
+
     },
     {
       title: "Capacity",
       dataIndex: "capacity",
       key: "capacity",
       editable: true,
+      sorter: (a, b) => a.capacity - b.capacity
+
     },
     {
       title: "AssignedRoute",
       dataIndex: "assignedRoute",
       key: "assignedRoute",
       editable: true,
+      sorter: (a, b) => a.assignedRoute.length - b.assignedRoute.length,
       render: (_, record) => {
         return record.assignedRoute_ID;
       },

@@ -156,7 +156,7 @@ function Routes() {
       {/* <Table bordered columns={columns} dataSource={routes} /> */}
 
       <RouteTable
-        routes={routes}
+        routes={routes || []}
         loading={loading}
         editingKey={editingKey}
         setEditingKey={setEditingKey}

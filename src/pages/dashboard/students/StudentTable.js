@@ -87,30 +87,39 @@ const StudentTable = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
-      editable: true
+      editable: true,
+      sorter: (a, b) => a.name.length - b.name.length,
+
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      editable: true
+      editable: false,
+      sorter: (a, b) => a.email.length - b.email.length,
+
     },
     {
       title: "Password",
       dataIndex: "password",
       key: "password",
       editable: true,
+      sorter: (a, b) => a.password.length - b.password.length,
+
     },
     {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
       editable: true,
+      sorter: (a, b) => a.phone.length - b.phone.length,
+
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
+      sorter: (a, b) => a.department.length - b.department.length,
       render: (_,record) =>{
         return <div>{record.department.title}</div>
       }
@@ -120,6 +129,8 @@ const StudentTable = ({
       title: "Slip Photo",
       dataIndex: "slipPhoto",
       key: "slipPhoto",
+      sorter: (a, b) => a.slipPhoto.length - b.slipPhoto.length,
+
       render: (_,record) =>{
         return  <Image
         width={200}
@@ -132,6 +143,7 @@ const StudentTable = ({
       title: "slipVerified",
       dataIndex: "slipVerified",
       key: "slipVerified",
+      sorter: (a, b) => (a === b)? 0 : a? -1 : 1,
       editable: true,
       render: (_,record) =>{
         return <span>{String(record.slipVerified)} </span>

@@ -75,12 +75,16 @@ const DriverTable = ({
       dataIndex: "name",
       key: "name",
       editable: true,
+      sorter: (a, b) => a.name.length - b.name.length,
+
     },
     {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
       editable: true,
+      sorter: (a, b) => a.phone.length - b.phone.length,
+
     },
     {
       title: "Photo",
