@@ -114,7 +114,7 @@ const RouteTable = ({
       editable: false,
       render: (_, record) =>{
        return <span>
-          {record.stops.length >0  ? record?.stops[record.stops.length -1].title : ''}
+          {record.stops.length >0 ? record?.stops[record.stops.length -1].title : ''}
         </span>
       }
     },
