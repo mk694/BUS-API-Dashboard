@@ -9,6 +9,22 @@ import { StudentApi } from "../services/api";
 import {SupportApi } from '../services/api';
 const { TextArea } = Input;
 
+let mock ={
+  "verified": false,
+  "slipVerified": false,
+  "_id": "60a689d6049eb73a10badeac",
+  "name": "Muhammad Abrar",
+  "email": "abrar@gmail.com",
+  "password": "12345",
+  "phone": "0312312312312312",
+  "systemId": "numl-f19-28876",
+  "department": "60a678d223c07001c42e2828",
+  "sex": "Male",
+  "createdAt": "2021-05-20T16:09:58.369Z",
+  "updatedAt": "2021-05-20T16:09:58.369Z",
+  "__v": 0
+}
+
 function StudentPortal() {
   const { Title } = Typography;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,9 +36,7 @@ function StudentPortal() {
 
 
   
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+ 
 
 
 
@@ -48,8 +62,8 @@ setMsg('');
 
 
   useEffect(() => {
+    setLoading(false);
     let loggedIn = true;
-
     const token = localStorage.getItem("token");
     if (token !== null && loggedIn === true) {
       setIsLoggedIn(true);
@@ -63,14 +77,9 @@ setMsg('');
     try {
       setLoading(true);
       const response = await StudentApi.queryStudent(values);
-      console.log('res', response.data);
-
-      if (response && response.data && response.data.length >0) {
+      if (response && response.data && response.data.systemId) {
         setStudent(response.data);
-        // localStorage.setItem("token", response.data.token);
-        // localStorage.setItem("user", JSON.stringify(response.data.user));
-        message.success("Profile Loaded ");
-        // setIsLoggedIn(true);
+        message.success("Profile Loaded ",response.data);
         setLoading(false);
       }else{
         message.error("No Record found.");
@@ -79,7 +88,6 @@ setMsg('');
     } catch (error) {
       console.log(error);
       setLoading(false);
-      // message.error("Incorrect email or password");
     }
   };
 
@@ -145,7 +153,7 @@ setMsg('');
               >
                 <Input />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 style={{
                   width: "92.45%",
                   marginLeft: "1.4rem",
@@ -161,9 +169,9 @@ setMsg('');
                 ]}
               >
                 <Input />
-              </Form.Item>
+              </Form.Item> */}
 
-              {/* <Form.Item
+              <Form.Item
                 label="Password"
                 name="password"
                 rules={[
@@ -175,7 +183,7 @@ setMsg('');
                     width: "100%",
                   }}
                 />
-              </Form.Item> */}
+              </Form.Item>
             </div>
             {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
@@ -203,7 +211,7 @@ setMsg('');
           </Form>
 
           {
-            student && student.systemId ?
+            student &&
             (<Row>
               <Col>
               <Descriptions title="User Info" bordered>
@@ -253,7 +261,7 @@ setMsg('');
               <Button style={{marginTop:'5px'}} onClick={onSubmit}>Send Message</Button>
               </Col>
             </Row>)
-            :<div>No Profile Found!</div>
+           
             
           }
         </div>

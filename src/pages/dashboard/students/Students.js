@@ -50,23 +50,13 @@ function Students() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        let { name, password, phone, systemId, sex , slipPhoto, slipVerified, department,verified} = newData[index];
+        let { name, password, phone, sex, slipVerified, department,verified} = newData[index];
 
         slipVerified = slipVerified === 'true'? true:false;
         verified = verified === 'true'? true:false;
-      let req=  {
-          name,
-          password,
-          phone,
-          systemId,
-          sex,
-          slipPhoto, 
-          slipVerified,
-          verified,
-          department
-        };
+      let req=  {name, password, phone, sex, slipVerified, department,verified };
         console.log('request', req)
-
+        console.log('key', key);
         const response = await StudentApi.update(key, req);
 
         if (response) {
@@ -81,7 +71,7 @@ function Students() {
       }
     } catch (error) {
       setDisable(false);
-      message.error("Email already exist");
+      message.error("Email already exist", error);
       console.log("Validate Failed:", error);
     }
   };

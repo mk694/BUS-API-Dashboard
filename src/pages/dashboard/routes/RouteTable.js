@@ -182,7 +182,7 @@ const RouteTable = ({
               cancelText="No"
               onConfirm={() => deleted(record.key)}
             >
-              <PlayCircleOutlined
+              {/* <PlayCircleOutlined
                 style={
                   editingKey !== ""
                     ? {
@@ -194,7 +194,7 @@ const RouteTable = ({
                       }
                 }
                 disabled={editingKey !== ""}
-              />
+              /> */}
  <DeleteOutlined
                 style={
                   editingKey !== ""

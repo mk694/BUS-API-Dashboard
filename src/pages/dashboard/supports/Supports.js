@@ -124,7 +124,7 @@ function Supports() {
   return (
     <div>
       <Title level={2}>Supports</Title>
-      <Button
+      {/* <Button
         style={{
           float: "right",
           marginBottom: "10px",
@@ -137,7 +137,7 @@ function Supports() {
         }}
       >
         Add Item
-      </Button>
+      </Button> */}
       {/* <Table bordered columns={columns} dataSource={supports} /> */}
 
       <SupportTable

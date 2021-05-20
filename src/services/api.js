@@ -66,7 +66,10 @@ export const StudentApi = {
   getAll: async () => await axiosAuth.get("/api/students/all"),
   create: async (data) => await axiosAuth.post("/api/students/add", data),
   getOne: async (id) => await axiosAuth.get(`/api/students/${id}`),
-  update: async (id, data) => await axiosAuth.put(`/api/students/${id}`, data),
+  update: async (id, data) =>{
+    console.log('id',id)
+    console.log('req',data);
+    return await axiosAuth.put("/api/students/"+id, data)},
   delete: async (id) => await axiosAuth.delete(`/api/students/${id}`),
   queryStudent: async (data) => await axios.get('/api/students?systemId=' + data.systemId + '&email='+data.email + '&password='+ data.password)
 };

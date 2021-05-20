@@ -50,12 +50,11 @@ function Drivers() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
         console.log("Newdata", newData);
-        const { name, phone, photo, assignedBus } = newData[index];
+        const { name, phone, assignedBus } = newData[index];
 
         const response = await DriverApi.update(key, {
           name,
           phone,
-          photo,
           assignedBus,
         });
 
@@ -140,7 +139,7 @@ function Drivers() {
     key: driver.key,
     name: driver.name,
     phone: driver.phone,
-    photo: driver.photo,
+    // photo: driver.photo,
     assignedBus: driver.assignedBus?.name
   }));
 

@@ -148,6 +148,10 @@ function Login() {
               }}
             >
               <Link to="/signup">Don't have an account? Sign up</Link>
+              <br/>
+              <br/>
+              <br/>
+              <Link to="/student-portal">Student Portal</Link>
             </div>
           </Form>
         </div>

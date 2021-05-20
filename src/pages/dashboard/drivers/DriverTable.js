@@ -57,7 +57,6 @@ const DriverTable = ({
     form.setFieldsValue({
       name: "",
       phone: "",
-      photo: "",
       ...record,
     });
     setEditingKey(record.key);
@@ -85,12 +84,6 @@ const DriverTable = ({
       editable: true,
       sorter: (a, b) => a.phone.length - b.phone.length,
 
-    },
-    {
-      title: "Photo",
-      dataIndex: "photo",
-      key: "photo",
-      editable: true,
     },
     {
       title: "AssignedBus",
