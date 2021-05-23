@@ -55,7 +55,8 @@ function Students() {
         slipVerified = slipVerified === 'true'? true:false;
         verified = verified === 'true'? true:false;
       let req=  {name, password, phone, sex, slipVerified, department,verified };
-        console.log('request', req)
+        req['department'] = req.department._id;
+        console.log('request', req);
         console.log('key', key);
         const response = await StudentApi.update(key, req);
 

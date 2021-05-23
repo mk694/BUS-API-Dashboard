@@ -235,39 +235,39 @@ const StudentTable = ({
       onCell: (record) => ({
         record,
         inputType:
-            // col.dataIndex === "slipVerified" ? (
-            //   <Select
-            //     showSearch
-            //     style={{ width: 200 }}
-            //     placeholder="Select Status"
-            //     filterOption={(input, option) =>
-            //       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            //     }
-            //   >
-            //         <Option key={'slipVerified'} value={'true'}>
-            //           True
-            //         </Option>
-            //         <Option key={'slipVerified2'} value={'false'}>
-            //           False
-            //         </Option>
-            //   </Select>
-            // )   : 
-            // col.dataIndex === "verified" ? (
-            //   <Select
-            //     style={{ width: 200 }}
-            //     placeholder="Account Status"
-            //     filterOption={(input, option) =>
-            //       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            //     }
-            //   >
-            //         <Option key={'verified1'} value={'true'}>
-            //           True
-            //         </Option>
-            //         <Option key={'verifiedd2'} value={'false'}>
-            //           False
-            //         </Option>
-            //   </Select>
-            // )   : 
+            col.dataIndex === "slipVerified" ? (
+              <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select Status"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                    <Option key={'slipVerified'} value={'true'}>
+                      True
+                    </Option>
+                    <Option key={'slipVerified2'} value={'false'}>
+                      False
+                    </Option>
+              </Select>
+            )   : 
+            col.dataIndex === "verified" ? (
+              <Select
+                style={{ width: 200 }}
+                placeholder="Account Status"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                    <Option key={'verified1'} value={'true'}>
+                      True
+                    </Option>
+                    <Option key={'verifiedd2'} value={'false'}>
+                      False
+                    </Option>
+              </Select>
+            )   : 
             <Input />
             ,
             dataIndex: col.dataIndex,
