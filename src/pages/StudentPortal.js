@@ -1,4 +1,4 @@
-import { Form, Input, Button, message, Typography, Spin, Row, Col, Image,Tag,
+import { Form, Input, Button, message,Upload, Typography, Spin, Row, Col, Image,Tag,
   Descriptions, Badge 
 
 } from "antd";
@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { StudentApi } from "../services/api";
+import { UploadOutlined } from '@ant-design/icons';
 import {SupportApi } from '../services/api';
+
 const { TextArea } = Input;
 
 let mock ={
@@ -25,6 +27,15 @@ let mock ={
   "__v": 0
 }
 
+
+const propertiesUpload = {
+  name: 'myFile',
+  action: 'http://localhost:8080/api/auth/upload',
+  headers: {
+    authorization: 'authorization-text',
+  }
+}
+
 function StudentPortal() {
   const { Title } = Typography;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,22 +43,40 @@ function StudentPortal() {
   const [student, setStudent] = useState();
   const [title, setTitle] = useState('');
   const [msg, setMsg] = useState('');
+  const [slipPhoto, SetSlipPhoto] = useState();
 
 
 
   
  
+  const  handleChange = async(e)=>{
+    console.log('change',e);
+    if(e.file.status == 'done'){
+      // set the file url 
+      alert('uploaded file');
+      let imgUrl = e.file.response.file;
+      console.log('use', imgUrl)
+      if(imgUrl){
+        SetSlipPhoto(imgUrl);
+         setStudent({...student, slipPhoto: imgUrl});
 
+       await StudentApi.update(student._id, {
+          slipPhoto: imgUrl
+        });
+
+        
+      }
+    }
+
+  }
 
 
 const onSubmit = () =>{
-  console.log('student', student);
   setLoading(true);
   let data = {
     title,
     message:msg,
-    studentId: student._id,
-    status: 'active'
+    studentId: student._id
   }
   console.log('data', data);
   SupportApi.create(data).then(res=>{
@@ -244,6 +273,18 @@ setMsg('');
     <Descriptions.Item label="Gender ">{student.sex}</Descriptions.Item>
     <Descriptions.Item label="Slip Photo">
       <Image src={student.slipPhoto ||'https://www.wkbn.com/wp-content/uploads/sites/48/2020/06/missing-generic.jpg'} style={{width:'250px'}} />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <Form.Item>
+        <Upload {...propertiesUpload} onChange={(e)=> handleChange(e)}
+        data={{name:'testing'}}>
+    <Button icon={<UploadOutlined />}>Click to Upload Challan</Button>
+  </Upload>
+        </Form.Item>
     </Descriptions.Item>
     {/* <Descriptions.Item label="Config Info">
       Data disk type: MongoDB
@@ -264,7 +305,6 @@ setMsg('');
               </Col>
               <Col style={{margin:'10px'}}>
               <h2>Send Message To Support</h2>
-
               <Input  value={title} placeholder="title"  style={{marginBottom:'10px'}} onChange={(e)=> setTitle(e.target.value)} />
               <TextArea  value={msg} rows={3} placeholder="Write your Message!" onChange={(e)=> setMsg(e.target.value)}  />
               <Button style={{marginTop:'5px'}} onClick={onSubmit}>Send Message</Button>
