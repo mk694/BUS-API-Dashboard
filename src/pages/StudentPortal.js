@@ -203,10 +203,19 @@ setMsg('');
             </div>
             <div
               style={{
-                marginLeft: "6.3rem",
+                textAlign: "center",
               }}
             >
               <Link to="/login">Administration Access? Log In</Link>
+            </div>
+            <div
+               style={{
+                textAlign: "center",
+              }}
+            >
+              <br />
+              <br />
+              <Link to="/student-register">Student Registeration</Link>
             </div>
           </Form>
 
