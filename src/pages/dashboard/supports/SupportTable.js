@@ -1,7 +1,8 @@
 import React from "react";
-import { Table, Input, Popconfirm, Form, Typography } from "antd";
+import { Table, Input, Popconfirm, Form, Typography,Select } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
+const { Option } = Select;
 
 const { TextArea } = Input;
 
@@ -77,7 +78,7 @@ const SupportTable = ({
       editable: true,
       render: (_, record) => {
         return <div>
-          {record.studentId.name}
+          {record.title}
         </div>
       }
     },
@@ -176,7 +177,24 @@ const SupportTable = ({
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex && "text",
+        inputType:
+            col.dataIndex == "status" ? (
+              <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select Status"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                    <Option key={'status1'} value={'true'}>
+                      True
+                    </Option>
+                    <Option key={'status2'} value={'false'}>
+                      False
+                    </Option>
+              </Select>
+            )   : <Input />,
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),

@@ -50,12 +50,12 @@ function Students() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        let { name, password, phone, sex, slipVerified, department,verified} = newData[index];
+        let { name, password, phone, sex, slipVerified,verified} = newData[index];
 
         slipVerified = slipVerified === 'true'? true:false;
         verified = verified === 'true'? true:false;
-      let req=  {name, password, phone, sex, slipVerified, department,verified };
-        req['department'] = req.department._id;
+      let req=  {name, password, phone, sex, slipVerified,verified };
+        // req['department'] = req.department._id;
         console.log('request', req);
         console.log('key', key);
         const response = await StudentApi.update(key, req);

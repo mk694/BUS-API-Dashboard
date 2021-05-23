@@ -49,10 +49,11 @@ function Supports() {
         newData.splice(index, 1, { ...item, ...row });
         setEditingKey("");
 
-        const { title } = newData[index];
+        // const { title } = newData[index];
+        console.log('newData', newData.values())
 
         const response = await SupportApi.update(key, {
-          title,
+          newData,
         });
 
         if (response) {
@@ -67,6 +68,7 @@ function Supports() {
       }
     } catch (error) {
       setDisable(false);
+      console.log("ERRRRORRR", error)
       message.error("Email already exist");
       console.log("Validate Failed:", error);
     }
